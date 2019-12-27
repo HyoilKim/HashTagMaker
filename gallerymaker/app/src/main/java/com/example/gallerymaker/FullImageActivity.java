@@ -4,10 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
-
-
-public class FullImageActivity extends Activity {
-
+import uk.co.senab.photoview.PhotoViewAttacher;
+import android.widget.ImageView.ScaleType;
+import androidx.appcompat.app.AppCompatActivity;
+public class FullImageActivity extends AppCompatActivity {
+    PhotoViewAttacher mAttacher;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +22,7 @@ public class FullImageActivity extends Activity {
         ImageAdapter imageAdapter = new ImageAdapter(this);
 
         ImageView imageView = (ImageView) findViewById((R.id.full_image_view));
+        mAttacher = new PhotoViewAttacher(imageView);
         imageView.setImageResource(imageAdapter.mThumbIds[position]);
     }
 

@@ -18,8 +18,8 @@
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.gallerymaker.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_hashtag"
+        android:name="com.example.gallerymaker.ui.hashtag.HashtagFragment"
+        android:label="@string/title_hashtag"
+        tools:layout="@layout/fragment_hashtag" />
 </navigation>

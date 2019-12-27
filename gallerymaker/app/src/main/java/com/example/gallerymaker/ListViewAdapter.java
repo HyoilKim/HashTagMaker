@@ -48,8 +48,8 @@ public class ListViewAdapter extends BaseAdapter {
 
         // 아이템 내 각 위젯에 데이터 반영
         iconImageView.setImageDrawable(listViewItem.getIcon());
-        titleTextView.setText(listViewItem.getTitle());
-        descTextView.setText(listViewItem.getDesc());
+        titleTextView.setText(listViewItem.getName());
+        descTextView.setText(listViewItem.getPhoneNumber());
 
         return convertView;
     }

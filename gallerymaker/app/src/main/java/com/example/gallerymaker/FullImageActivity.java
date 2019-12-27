@@ -21,9 +21,10 @@ public class FullImageActivity extends AppCompatActivity {
         int position = i.getExtras().getInt("id");
         ImageAdapter imageAdapter = new ImageAdapter(this);
 
-        ImageView imageView = (ImageView) findViewById((R.id.full_image_view));
+        ImageView imageView = (ImageView) findViewById(R.id.full_image_view);
         mAttacher = new PhotoViewAttacher(imageView);
         imageView.setImageResource(imageAdapter.mThumbIds[position]);
+        imageView.bringToFront();
     }
 
 }

@@ -15,6 +15,7 @@ import android.widget.GridView;
 import com.example.gallerymaker.FullImageActivity;
 import com.example.gallerymaker.ImageAdapter;
 import com.example.gallerymaker.R;
+
 public class GalleryFragment extends Fragment {
 
     public void onCreate(Bundle savedInstanceState) {

@@ -2,6 +2,7 @@ package com.example.gallerymaker;
 import android.app.AppComponentFactory;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +19,7 @@ public class itemDetail extends AppCompatActivity {
         name = (TextView)findViewById(R.id.detail_name);
         phone_number = (TextView)findViewById(R.id.detail_phoneNumber);
 
+        Log.d("detail_name", intent.getStringExtra("name"));
         name.setText(intent.getStringExtra("name"));
         phone_number.setText(intent.getStringExtra("phone_number"));
 

@@ -4,32 +4,39 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ListView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.fragment.app.ListFragment;
 
+import com.example.gallerymaker.ListViewAdapter;
 import com.example.gallerymaker.R;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends ListFragment {
+    ListViewAdapter adapter;
 
-    private HomeViewModel homeViewModel;
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root;
+
+        adapter = new ListViewAdapter() ;
+        setListAdapter(adapter);
+
+        // 첫 번째 아이템 추가.
+        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_dashboard_black_24dp),
+                "Box", "Account Box Black 36dp") ;
+        // 두 번째 아이템 추가.
+        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_home_black_24dp),
+                "Circle", "Account Circle Black 36dp") ;
+        // 세 번째 아이템 추가.
+        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_notifications_black_24dp),
+                "Ind", "Assignment Ind Black 36dp") ;
+
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 }

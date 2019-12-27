@@ -4,32 +4,45 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import androidx.annotation.Nullable;
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridView;
+
+import com.example.gallerymaker.FullImageActivity;
+import com.example.gallerymaker.ImageAdapter;
 import com.example.gallerymaker.R;
-
 public class GalleryFragment extends Fragment {
 
-    private GalleryViewModel galleryViewModel;
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        galleryViewModel =
-                ViewModelProviders.of(this).get(GalleryViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_gallery, container, false);
-        final TextView textView = root.findViewById(R.id.text_dashboard);
-        galleryViewModel.getText().observe(this, new Observer<String>() {
+        View view = inflater.inflate(R.layout.grid_layout, container, false);
+        GridView gridView = (GridView) view.findViewById(R.id.grid_view);
+
+        // Instance of ImageAdapter Class
+        gridView.setAdapter(new ImageAdapter(getActivity()));
+
+        /**
+         * On Click event for Single Gridview Item
+         * */
+        gridView.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+
+                // Sending image id to FullScreenActivity
+                Intent i = new Intent(getActivity().getApplicationContext(), FullImageActivity.class);
+                // passing array index
+                i.putExtra("id", position);
+                startActivity(i);
             }
         });
-        return root;
+        return view;
     }
 }

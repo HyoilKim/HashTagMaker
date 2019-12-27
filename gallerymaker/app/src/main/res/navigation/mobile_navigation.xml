@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_gallery"
         android:name="com.example.gallerymaker.ui.gallery.GalleryFragment"
         android:label="@string/title_gallery"
         tools:layout="@layout/fragment_gallery" />

@@ -80,6 +80,8 @@ public class ListViewAdapter extends BaseAdapter {
 //        Log.d("phone_number", phone_number);
 //        Log.d("memo", memo);
 
+        Log.d("@@@@@@@@@@@@", name);
+        Log.d("@@@@@@@@@@@@", phone_number);
         listViewItemList.add(item);
     }
 }

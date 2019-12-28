@@ -15,11 +15,7 @@ import java.util.ArrayList;
 public class ListViewAdapter extends BaseAdapter {
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
     private ArrayList<ListViewItem> listViewItemList = new ArrayList<ListViewItem>() ;
-    private Integer[] profile_image_lIst = {
-            R.drawable.ic_dashboard_black_24dp,
-            R.drawable.ic_notifications_black_24dp,
-            R.drawable.ic_home_black_24dp
-    };
+    ListView_ImageList profile_image_lIst = new ListView_ImageList();
 
     // ListViewAdapter의 생성자
     public ListViewAdapter() {
@@ -52,9 +48,7 @@ public class ListViewAdapter extends BaseAdapter {
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         ListViewItem listViewItem = listViewItemList.get(position);
 
-        iconImageView.setImageResource( profile_image_lIst [ listViewItem.getImg() ] );
-        // 아이템 내 각 위젯에 데이터 반영
-//        iconImageView
+        iconImageView.setImageResource( profile_image_lIst.getImg ( listViewItem.getImg() ) );
         nameView.setText(listViewItem.getName());
         phoneNumberView.setText(listViewItem.getPhoneNumber());
         return convertView;
@@ -77,15 +71,10 @@ public class ListViewAdapter extends BaseAdapter {
         ListViewItem item = new ListViewItem();
 
         item.setImg(img);
-//        item.setImageView(imageView);
         item.setName(name);
         item.setPhoneNumber(phone_number);
         item.setIsBlock(isBlock);
         item.setMemo(memo);
-
-//        Log.d("name", name);
-//        Log.d("phone_number", phone_number);
-//        Log.d("memo", memo);
 
         listViewItemList.add(item);
     }

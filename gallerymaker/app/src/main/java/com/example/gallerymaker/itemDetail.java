@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class itemDetail extends AppCompatActivity {
-
+    private ListView_ImageList profile_image_lIst = new ListView_ImageList();
     private TextView name;
     private TextView phone_number;
     private ImageView img;
@@ -42,7 +42,9 @@ public class itemDetail extends AppCompatActivity {
 
         name.setText( intent.getStringExtra ("name") );
         phone_number.setText( intent.getStringExtra ("phone_number") );
-        img.setImageResource( intent.getIntExtra ("img", 0) );
+
+        ListViewAdapter tmp = new ListViewAdapter();
+        img.setImageResource( tmp.profile_image_lIst.getImg ( intent.getIntExtra ( "img", 0 ) ) );
         memo.setText( getMemo ( getJson(), intent.getStringExtra ("phone_number") ) );
     }
 

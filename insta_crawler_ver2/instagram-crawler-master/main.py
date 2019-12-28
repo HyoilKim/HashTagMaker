@@ -22,7 +22,7 @@ class instagram_crawler:
 
 
     def download_files(self):
-        i = 4
+        i = 18
         os.system("python crawler.py hashtag -t " + self.tag_list[i] + " -n 100 -o ./outputs/out" + str(i) + " --fetch_hashtags")
 
 

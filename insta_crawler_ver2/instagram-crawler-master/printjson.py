@@ -1,4 +1,4 @@
- # -*- encoding: utf-8 -*-
+# -*- encoding: utf-8 -*-
 import json
 import csv
 
@@ -24,8 +24,8 @@ class csvcreator:
         
 
     def concat_hashtags(self):
-        for i in range(self.numtag-15):
-            with open(r'C:\Users\q\Desktop\instagram-crawler-master\instagram-crawler-master\outputs\out' + str(i), 'rt', encoding='UTF8') as f:
+        for i in range(self.numtag):
+            with open(r'C:\Users\q\Desktop\Flow-Camp\insta_crawler_ver2\instagram-crawler-master\outputs\out' + str(i), 'rt', encoding='UTF8') as f:
                 json_data = json.load(f)
                 for j in range (len(json_data)):
                     json_dict = json_data[j]

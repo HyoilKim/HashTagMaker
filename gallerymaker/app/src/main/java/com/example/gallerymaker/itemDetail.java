@@ -78,6 +78,6 @@ public class itemDetail extends AppCompatActivity {
         }catch (JSONException e) {
             e.printStackTrace();
         }
-        return "-1";
+        return "empty";
     }
 }

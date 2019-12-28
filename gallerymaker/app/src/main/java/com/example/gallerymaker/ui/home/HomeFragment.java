@@ -26,6 +26,7 @@ import com.example.gallerymaker.ListViewAdapter;
 import com.example.gallerymaker.ListViewItem;
 import com.example.gallerymaker.R;
 import com.example.gallerymaker.itemDetail;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,10 +35,20 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class HomeFragment extends ListFragment {
     private String memo;
     private boolean isBlock;
+    private Bitmap bitmap;
+
+    private Integer[] profile_image_lIst = {
+            R.drawable.ic_dashboard_black_24dp,
+            R.drawable.ic_notifications_black_24dp,
+            R.drawable.ic_home_black_24dp
+    };
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +82,6 @@ public class HomeFragment extends ListFragment {
     public String getJson() {
         String json = "";
 
-        Log.d("!!!!!!!!","2");
         try {
             InputStream is = getResources().getAssets().open("phone_Book.json");
             int fileSize = is.available();
@@ -85,7 +95,6 @@ public class HomeFragment extends ListFragment {
             ex.printStackTrace();
         }
 
-        Log.d("@@@@@@@", "");
         return json;
     }
 
@@ -100,19 +109,52 @@ public class HomeFragment extends ListFragment {
 
                 JSONObject item = phoneBook_list.getJSONObject(i);
 
-//                int img = Integer.parseInt( item.getString("img") );
+                int img = Integer.parseInt(item.getString("img"));
+
                 String phone_number = item.getString("phone_number");
                 String name = item.getString("name");
                 isBlock = Boolean.valueOf(item.getString("isBlock"));
 
-                Log.d("name", name);
-                Log.d("phone_number", phone_number);
-
-                adapter.addItem(0, name, phone_number, isBlock, memo);
+                adapter.addItem(img, name, phone_number, isBlock, memo);
             }
-
         }catch (JSONException e) {
             e.printStackTrace();
         }
     }
 }
+
+
+// http통신을 하여 url의 image불러오기(http통신)
+//                Thread thread = new Thread() {
+//                    @Override
+//                    public void run() {
+//                        try {
+//
+//                            Log.d("url","connect");
+//                            URL url = new URL("https://i.ibb.co/gRKWCXD/image.png");
+//                            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+//                            conn.setDoInput(true);
+//                            conn.connect();
+//
+//                            InputStream is = conn.getInputStream();
+//                            bitmap = BitmapFactory.decodeStream(is);
+//
+//                        } catch (MalformedURLException e) {
+//                            Log.d("url","error");
+//                            e.printStackTrace();
+//                        } catch (IOException e) {
+//                            Log.d("url","error");
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                };
+//                thread.start();
+//                Log.d("url","connect");
+
+//                try {
+//                    Log.d("url","connect");
+//                    thread.join();
+//                    imageView.setImageBitmap(bitmap);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }

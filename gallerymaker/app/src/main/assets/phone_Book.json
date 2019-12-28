@@ -1,21 +1,21 @@
 [
     {
       "name": "김몰입",
-      "img": "R.drawable.ic_dashboard_black_24dp",
+      "img": "0",
       "phone_number": "010-3631-1961",
       "isBlock": "false",
       "memo": "best friends"
     },
     {
       "name": "이몰입",
-      "img": "R.drawable.ic_home_black_24dp",
+      "img": "1",
       "phone_number": "010-2732-2793",
       "isBlock": "false",
       "memo": "office peer"
     },
     {
       "name": "박몰입",
-      "img": "R.drawable.ic_dashboard_black_24dp",
+      "img": "2",
       "phone_number": "010-8292-9862",
       "isBlock": "false",
       "memo": "parent"

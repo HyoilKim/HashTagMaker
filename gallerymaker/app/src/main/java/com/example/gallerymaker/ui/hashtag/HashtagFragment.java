@@ -37,7 +37,6 @@ import com.example.gallerymaker.Result;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
-import org.opencv.android.OpenCVLoader;
 
 import java.io.File;
 import java.io.IOException;
@@ -78,7 +77,6 @@ public class HashtagFragment extends Fragment {
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        OpenCVLoader.initDebug();
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         tedPermission();

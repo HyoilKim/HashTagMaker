@@ -1,0 +1,23 @@
+[
+    {
+      "name": "가몰입",
+      "img": "R.drawable.ic_dashboard_black_24dp",
+      "phone_number": "010-1111-1111",
+      "isBlock": "false",
+      "memo": ""
+    },
+    {
+      "name": "나몰입",
+      "img": "R.drawable.ic_home_black_24dp",
+      "phone_number": "010-2222-2222",
+      "isBlock": "false",
+      "memo": ""
+    },
+    {
+      "name": "다몰입",
+      "img": "R.drawable.ic_dashboard_black_24dp",
+      "phone_number": "010-3333-3333",
+      "isBlock": "false",
+      "memo": ""
+    }
+  ]

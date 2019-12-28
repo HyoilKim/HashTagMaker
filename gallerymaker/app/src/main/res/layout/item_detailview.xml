@@ -31,40 +31,40 @@
         android:layout_below="@+id/detail_name"
         android:layout_marginTop="1dp"
         android:layout_weight="1"
-        android:src="@mipmap/ic_launcher_foreground" />
+        android:src="@drawable/call_img"/>
 
     <ImageView
         android:id="@+id/detail_message_img"
-        android:layout_width="92dp"
-        android:layout_height="85dp"
+        android:layout_width="48dp"
+        android:layout_height="57dp"
         android:layout_below="@+id/detail_name"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="19dp"
         android:layout_toRightOf="@id/detail_call_img"
         android:layout_weight="1"
-        android:src="@mipmap/ic_launcher_foreground"/>
+        android:src="@drawable/envelope" />
 
     <ImageView
         android:id="@+id/detail_video_img"
-        android:layout_width="92dp"
-        android:layout_height="85dp"
+        android:layout_width="48dp"
+        android:layout_height="57dp"
         android:layout_below="@+id/detail_name"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginLeft="46dp"
+        android:layout_marginTop="17dp"
         android:layout_toRightOf="@id/detail_message_img"
         android:layout_weight="1"
-        android:src="@mipmap/ic_launcher_foreground"/>
+        android:src="@drawable/video_call" />
 
     <ImageView
         android:id="@+id/detail_mail_img"
-        android:layout_width="92dp"
-        android:layout_height="85dp"
+        android:layout_width="48dp"
+        android:layout_height="57dp"
         android:layout_below="@+id/detail_name"
-        android:layout_marginLeft="2dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="15dp"
         android:layout_toRightOf="@id/detail_video_img"
         android:layout_weight="1"
-        android:src="@mipmap/ic_launcher_foreground"/>
+        android:src="@drawable/email" />
 
     <TextView
         android:id="@+id/detail_phoneNumber"

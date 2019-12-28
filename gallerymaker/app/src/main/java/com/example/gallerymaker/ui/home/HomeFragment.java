@@ -44,24 +44,7 @@ public class HomeFragment extends ListFragment {
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-<<<<<<< HEAD
         // show listView from json
-=======
-        adapter = new ListViewAdapter() ;
-        setListAdapter(adapter);
-
-        // add item at list
-//        adapter.addItem(R.drawable.ic_dashboard_black_24dp,
-//                "김몰입", "010-7942-7041") ;
-//        adapter.addItem(R.drawable.ic_home_black_24dp,
-//                "이몰입", "010-6354-1236") ;
-//        adapter.addItem(R.drawable.ic_notifications_black_24dp,
-//                "정몰입", "010-6830-1232") ;
-
-        Log.d("@@@@@@@@@","1");
-
-
->>>>>>> cd824fd0f200310b613c2b83559522b4722b1c64
         jsonParsing(getJson());
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -85,11 +68,7 @@ public class HomeFragment extends ListFragment {
 
     }
 
-<<<<<<< HEAD
     public String getJson() {
-=======
-    private String getJson() {
->>>>>>> cd824fd0f200310b613c2b83559522b4722b1c64
         String json = "";
 
         Log.d("!!!!!!!!","2");
@@ -110,15 +89,8 @@ public class HomeFragment extends ListFragment {
         return json;
     }
 
-<<<<<<< HEAD
-    public void jsonParsing(String json)
-    {
+    private void jsonParsing(String json) {
         ListViewAdapter adapter = new ListViewAdapter() ;
-=======
-    private void jsonParsing(String json)
-    {
-        adapter = new ListViewAdapter() ;
->>>>>>> cd824fd0f200310b613c2b83559522b4722b1c64
         setListAdapter(adapter);
         Log.d("jsonjsonjosnjson", json);
         try{
@@ -127,29 +99,16 @@ public class HomeFragment extends ListFragment {
             for(int i = 0; i < phoneBook_list.length(); i++) {
 
                 JSONObject item = phoneBook_list.getJSONObject(i);
-<<<<<<< HEAD
-=======
-                Log.d("img", item.getString("img"));
-                Log.d("img", item.getString("img"));
->>>>>>> cd824fd0f200310b613c2b83559522b4722b1c64
 
 //                int img = Integer.parseInt( item.getString("img") );
                 String phone_number = item.getString("phone_number");
                 String name = item.getString("name");
-<<<<<<< HEAD
-                memo = item.getString("memo");
                 isBlock = Boolean.valueOf(item.getString("isBlock"));
 
                 Log.d("name", name);
                 Log.d("phone_number", phone_number);
-                Log.d("memo", memo);
 
                 adapter.addItem(0, name, phone_number, isBlock, memo);
-=======
-
-                Log.d("@@@@@@@@@@@@", name);
-                adapter.addItem(0, name, phone_number);
->>>>>>> cd824fd0f200310b613c2b83559522b4722b1c64
             }
 
         }catch (JSONException e) {

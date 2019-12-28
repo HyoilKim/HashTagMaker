@@ -2,17 +2,11 @@ package com.example.gallerymaker.ui.hashtag;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.hardware.camera2.CameraCaptureSession;
@@ -21,7 +15,6 @@ import android.hardware.camera2.CaptureRequest;
 import android.media.ExifInterface;
 import android.media.ImageReader;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -38,25 +31,19 @@ import android.widget.Toast;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import com.example.gallerymaker.Classifier;
 import com.example.gallerymaker.R;
+import com.example.gallerymaker.Result;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
-import org.opencv.android.Utils;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint;
-import org.opencv.imgproc.Imgproc;
+import org.opencv.android.OpenCVLoader;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
-import javax.xml.transform.Result;
 
 
 public class HashtagFragment extends Fragment {
@@ -84,15 +71,18 @@ public class HashtagFragment extends Fragment {
     int  deviceHeight,deviceWidth;
     int previewHeight, previewWidth;
     private int RectLeft, RectTop,RectRight,RectBottom ;
-    int imageWidth, imageHeight;
+    int imageWidth=400;
+    int imageHeight=400;
 
 
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        OpenCVLoader.initDebug();
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         tedPermission();
+
         view = inflater.inflate(R.layout.activity_get_image, container, false);
         view.findViewById(R.id.btnGallery).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -237,6 +227,9 @@ public class HashtagFragment extends Fragment {
         return image;
     }
 
+    private Classifier mClassifier;
+    private Result result;
+    private String answer;
     /**
      *  tempFile 을 bitmap 으로 변환 후 ImageView 에 설정한다.
      */
@@ -259,13 +252,15 @@ public class HashtagFragment extends Fragment {
 
 
         try {
-            mClassifier = new Classifier(this);
+            mClassifier = new Classifier(getActivity());
         } catch (IOException e) {
             Toast.makeText(getActivity(),"Failed to create Classifier", Toast.LENGTH_LONG).show();
             Log.e("@@@", "Failed to create Classifier", e);
         }
 
-        new SaveImageTask().execute(bmRotated);
+        result = mClassifier.classify(bmRotated);
+        answer = result.getHashtags();
+        Log.d("", ""+answer);
 
 
 
@@ -353,189 +348,5 @@ public class HashtagFragment extends Fragment {
                 .check();
 
     }
-
-
-    Mat image_resize(Mat image, int height)
-    {
-
-        int h = image.rows();
-        int w = image.cols();
-
-        float r = height / (float)h;
-        org.opencv.core.Size dim = new org.opencv.core.Size((int)(w * r), height);
-
-        Mat resized= new Mat();
-        Imgproc.resize(image, resized, dim, 0,0, Imgproc.INTER_AREA);
-
-        return resized;
-    }
-
-    public Bitmap toGrayscale(Bitmap bmpOriginal)
-    {
-        int width, height;
-        height = bmpOriginal.getHeight();
-        width = bmpOriginal.getWidth();
-
-        Bitmap bmpGrayscale = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(bmpGrayscale);
-        Paint paint = new Paint();
-        ColorMatrix cm = new ColorMatrix();
-        cm.setSaturation(0);
-        ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
-        paint.setColorFilter(f);
-        c.drawBitmap(bmpOriginal, 0, 0, paint);
-        return bmpGrayscale;
-    }
-
-
-    public static final String insertImage(ContentResolver cr,
-                                           Bitmap source,
-                                           String title,
-                                           String description) {
-
-        ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.TITLE, title);
-        values.put(MediaStore.Images.Media.DISPLAY_NAME, title);
-        values.put(MediaStore.Images.Media.DESCRIPTION, description);
-        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-        // Add the date meta data to ensure the image is added at the front of the gallery
-        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
-        values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
-
-        Uri url = null;
-        String stringUrl = null;    /* value to be returned */
-
-        try {
-            url = cr.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-
-            if (source != null) {
-                OutputStream imageOut = cr.openOutputStream(url);
-                try {
-                    source.compress(Bitmap.CompressFormat.JPEG, 100, imageOut);
-                } finally {
-                    imageOut.close();
-                }
-
-            } else {
-                cr.delete(url, null, null);
-                url = null;
-            }
-        } catch (Exception e) {
-            if (url != null) {
-                cr.delete(url, null, null);
-                url = null;
-            }
-        }
-
-        if (url != null) {
-            stringUrl = url.toString();
-        }
-
-        return stringUrl;
-    }
-    private class SaveImageTask extends AsyncTask<Bitmap, Void, String> {
-
-        @Override
-        protected void onPostExecute(String str) {
-            super.onPostExecute(str);
-
-            Toast.makeText(getActivity(), str, Toast.LENGTH_LONG).show();
-            //Toast.makeText(MainActivity.this, "사진을 저장하였습니다.", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        protected String doInBackground(Bitmap... data) {
-
-            Bitmap bitmap = null;
-
-            // Bitmap to Mat
-            Mat image = new Mat();
-            Utils.bitmapToMat(bitmap, image);
-
-            // 프리뷰 크기로 저장할 이미지 크기 조정
-            Imgproc.resize(image, image, new org.opencv.core.Size(imageWidth, imageHeight), 0, 0, Imgproc.INTER_AREA );
-
-            // Color to Gray
-            Imgproc.cvtColor(image, image, Imgproc.COLOR_BGRA2GRAY);
-
-            //ROI
-            Mat roi = image.submat(new org.opencv.core.Rect(RectLeft, RectTop, RectRight-RectLeft, RectBottom-RectTop));
-
-            org.opencv.core.Size size_28x28 = new org.opencv.core.Size(Classifier.IMG_WIDTH, Classifier.IMG_HEIGHT);
-            Imgproc.resize( roi, roi, size_28x28 , 0, 0, Imgproc.INTER_AREA);
-
-            // 이진화
-            Imgproc.adaptiveThreshold(roi, roi,
-                    255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY_INV, 201, 20
-            );
-//            Imgproc.threshold(roi, roi, 0, 255, Imgproc.THRESH_OTSU|Imgproc.THRESH_BINARY_INV);
-
-
-//            Mat kernel = new Mat(new org.opencv.core.Size(3, 3), CvType.CV_8UC1, new Scalar(255));
-//            Imgproc.morphologyEx(roi, roi, Imgproc.MORPH_OPEN, kernel);
-//            Imgproc.morphologyEx(roi, roi, Imgproc.MORPH_CLOSE, kernel);
-
-
-            // 컨투어의 중심을 이미지 중앙으로 이동
-            List<MatOfPoint> contours = new ArrayList<>();
-            Imgproc.findContours(roi, contours, new Mat(),Imgproc.RETR_EXTERNAL,Imgproc.CHAIN_APPROX_SIMPLE);
-
-            int maxAreaIndex = -1;
-            double maxArea = -1;
-            for (int i = 0; i < contours.size(); i++) {
-                double area = Imgproc.contourArea(contours.get(i));
-                if (area > maxArea) {
-                    maxArea = area;
-                    maxAreaIndex = i;
-                }
-            }
-
-
-            // 무게 중심 대신 경계 사각형 중심 사용
-            org.opencv.core.Rect r = Imgproc.boundingRect(contours.get(maxAreaIndex));
-
-            int center_x = r.x + (r.width / 2);
-            int center_y = r.y + (r.height / 2);
-
-            int shiftx = (int) (roi.cols()/2.0-center_x);
-            int shifty = (int) (roi.rows()/2.0-center_y);
-
-            Mat translationMatrix = new Mat(2, 3, CvType.CV_32FC1);
-            float[] array = {1, 0, shiftx, 0, 1, shifty};
-            translationMatrix.put(0, 0, array);
-            Imgproc.warpAffine(roi, roi, translationMatrix, roi.size());
-
-
-            Imgproc.cvtColor(roi, roi, Imgproc.COLOR_GRAY2BGRA);
-            Bitmap resultBitmap = Bitmap.createBitmap(roi.cols(), roi.rows(), Bitmap.Config.ARGB_8888);
-            Utils.matToBitmap(roi, resultBitmap);
-
-            Bitmap bmp = toGrayscale(resultBitmap);
-
-            Result result = mClassifier.classify(bmp);
-
-            insertImage(getActivity().getContentResolver(), bmp, "" + System.currentTimeMillis(), "");
-
-            return "" + result.getNumber();
-
-        }
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

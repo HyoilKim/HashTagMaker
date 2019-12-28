@@ -36,27 +36,15 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class HomeFragment extends ListFragment {
-    ListViewAdapter adapter;
+    private String memo;
+    private boolean isBlock;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        adapter = new ListViewAdapter() ;
-        setListAdapter(adapter);
-
-        // add item at list
-//        adapter.addItem(R.drawable.ic_dashboard_black_24dp,
-//                "김몰입", "010-7942-7041") ;
-//        adapter.addItem(R.drawable.ic_home_black_24dp,
-//                "이몰입", "010-6354-1236") ;
-//        adapter.addItem(R.drawable.ic_notifications_black_24dp,
-//                "정몰입", "010-6830-1232") ;
-
-        Log.d("@@@@@@@@@","1");
-
-
+        // show listView from json
         jsonParsing(getJson());
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -80,7 +68,7 @@ public class HomeFragment extends ListFragment {
 
     }
 
-    private String getJson() {
+    public String getJson() {
         String json = "";
 
         Log.d("!!!!!!!!","2");
@@ -101,9 +89,9 @@ public class HomeFragment extends ListFragment {
         return json;
     }
 
-    private void jsonParsing(String json)
+    public void jsonParsing(String json)
     {
-        adapter = new ListViewAdapter() ;
+        ListViewAdapter adapter = new ListViewAdapter() ;
         setListAdapter(adapter);
         Log.d("jsonjsonjosnjson", json);
         try{
@@ -112,15 +100,18 @@ public class HomeFragment extends ListFragment {
             for(int i = 0; i < phoneBook_list.length(); i++) {
 
                 JSONObject item = phoneBook_list.getJSONObject(i);
-                Log.d("img", item.getString("img"));
-                Log.d("img", item.getString("img"));
 
 //                int img = Integer.parseInt( item.getString("img") );
                 String phone_number = item.getString("phone_number");
                 String name = item.getString("name");
+                memo = item.getString("memo");
+                isBlock = Boolean.valueOf(item.getString("isBlock"));
 
-                Log.d("@@@@@@@@@@@@", name);
-                adapter.addItem(0, name, phone_number);
+                Log.d("name", name);
+                Log.d("phone_number", phone_number);
+                Log.d("memo", memo);
+
+                adapter.addItem(0, name, phone_number, isBlock, memo);
             }
 
         }catch (JSONException e) {

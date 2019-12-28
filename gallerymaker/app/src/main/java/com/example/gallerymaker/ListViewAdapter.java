@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,17 +41,16 @@ public class ListViewAdapter extends BaseAdapter {
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
         ImageView iconImageView = (ImageView) convertView.findViewById(R.id.listview_img) ;
-        TextView titleTextView = (TextView) convertView.findViewById(R.id.textView1) ;
-        TextView descTextView = (TextView) convertView.findViewById(R.id.textView2) ;
+        TextView nameView = (TextView) convertView.findViewById(R.id.textView1) ;
+        TextView phoneNumberView = (TextView) convertView.findViewById(R.id.textView2) ;
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         ListViewItem listViewItem = listViewItemList.get(position);
 
         // 아이템 내 각 위젯에 데이터 반영
         iconImageView.setImageResource(listViewItem.getImg());
-        titleTextView.setText(listViewItem.getName());
-        descTextView.setText(listViewItem.getPhoneNumber());
-
+        nameView.setText(listViewItem.getName());
+        phoneNumberView.setText(listViewItem.getPhoneNumber());
         return convertView;
     }
 
@@ -67,14 +67,19 @@ public class ListViewAdapter extends BaseAdapter {
     }
 
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
-    public void addItem(int img, String name, String phone_number) {
+    public void addItem(int img, String name, String phone_number, boolean isBlock, String memo) {
         ListViewItem item = new ListViewItem();
 
         item.setImg(img);
         item.setName(name);
         item.setPhoneNumber(phone_number);
-        Log.d("@@@@@@@@@@@@", name);
-        Log.d("@@@@@@@@@@@@", phone_number);
+        item.setIsBlock(isBlock);
+        item.setMemo(memo);
+
+//        Log.d("name", name);
+//        Log.d("phone_number", phone_number);
+//        Log.d("memo", memo);
+
         listViewItemList.add(item);
     }
 }

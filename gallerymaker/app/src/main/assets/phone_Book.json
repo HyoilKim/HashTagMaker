@@ -1,23 +1,23 @@
 [
     {
-      "name": "가몰입",
+      "name": "김몰입",
       "img": "R.drawable.ic_dashboard_black_24dp",
-      "phone_number": "010-1111-1111",
+      "phone_number": "010-3631-1961",
       "isBlock": "false",
-      "memo": ""
+      "memo": "best friends"
     },
     {
-      "name": "나몰입",
+      "name": "이몰입",
       "img": "R.drawable.ic_home_black_24dp",
-      "phone_number": "010-2222-2222",
+      "phone_number": "010-2732-2793",
       "isBlock": "false",
-      "memo": ""
+      "memo": "office peer"
     },
     {
-      "name": "다몰입",
+      "name": "박몰입",
       "img": "R.drawable.ic_dashboard_black_24dp",
-      "phone_number": "010-3333-3333",
+      "phone_number": "010-8292-9862",
       "isBlock": "false",
-      "memo": ""
+      "memo": "parent"
     }
   ]

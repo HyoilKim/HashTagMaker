@@ -27,7 +27,13 @@ import com.example.gallerymaker.ListViewItem;
 import com.example.gallerymaker.R;
 import com.example.gallerymaker.itemDetail;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class HomeFragment extends ListFragment {
     ListViewAdapter adapter;
@@ -41,13 +47,17 @@ public class HomeFragment extends ListFragment {
         setListAdapter(adapter);
 
         // add item at list
-        adapter.addItem(R.drawable.ic_dashboard_black_24dp,
-                "김몰입", "010-7942-7041") ;
-        adapter.addItem(R.drawable.ic_home_black_24dp,
-                "이몰입", "010-6354-1236") ;
-        adapter.addItem(R.drawable.ic_notifications_black_24dp,
-                "정몰입", "010-6830-1232") ;
+//        adapter.addItem(R.drawable.ic_dashboard_black_24dp,
+//                "김몰입", "010-7942-7041") ;
+//        adapter.addItem(R.drawable.ic_home_black_24dp,
+//                "이몰입", "010-6354-1236") ;
+//        adapter.addItem(R.drawable.ic_notifications_black_24dp,
+//                "정몰입", "010-6830-1232") ;
 
+        Log.d("@@@@@@@@@","1");
+
+
+        jsonParsing(getJson());
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -68,5 +78,53 @@ public class HomeFragment extends ListFragment {
         intent.putExtra("img", img);
         startActivity(intent);
 
+    }
+
+    private String getJson() {
+        String json = "";
+
+        Log.d("!!!!!!!!","2");
+        try {
+            InputStream is = getResources().getAssets().open("phone_Book.json");
+            int fileSize = is.available();
+
+            byte[] buffer = new byte[fileSize];
+            is.read(buffer);
+            is.close();
+
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        Log.d("@@@@@@@", "");
+        return json;
+    }
+
+    private void jsonParsing(String json)
+    {
+        adapter = new ListViewAdapter() ;
+        setListAdapter(adapter);
+        Log.d("jsonjsonjosnjson", json);
+        try{
+            JSONArray phoneBook_list = new JSONArray(json);
+
+            for(int i = 0; i < phoneBook_list.length(); i++) {
+
+                JSONObject item = phoneBook_list.getJSONObject(i);
+                Log.d("img", item.getString("img"));
+                Log.d("img", item.getString("img"));
+
+//                int img = Integer.parseInt( item.getString("img") );
+                String phone_number = item.getString("phone_number");
+                String name = item.getString("name");
+
+                Log.d("@@@@@@@@@@@@", name);
+                adapter.addItem(0, name, phone_number);
+            }
+
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

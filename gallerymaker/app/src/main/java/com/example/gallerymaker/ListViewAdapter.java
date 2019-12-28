@@ -1,6 +1,7 @@
 package com.example.gallerymaker;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,13 +67,14 @@ public class ListViewAdapter extends BaseAdapter {
     }
 
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
-    public void addItem(int img, String title, String desc) {
+    public void addItem(int img, String name, String phone_number) {
         ListViewItem item = new ListViewItem();
 
         item.setImg(img);
-        item.setTitle(title);
-        item.setDesc(desc);
-
+        item.setName(name);
+        item.setPhoneNumber(phone_number);
+        Log.d("@@@@@@@@@@@@", name);
+        Log.d("@@@@@@@@@@@@", phone_number);
         listViewItemList.add(item);
     }
 }

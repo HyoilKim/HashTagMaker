@@ -8,8 +8,8 @@ public class ListViewItem {
     private int img;
 
     public void setImg(int img) { this.img = img; }
-    public void setTitle(String name) { this.name = name; }
-    public void setDesc(String phone_number) { this.phone_number = phone_number; }
+    public void setName(String name) { this.name = name; }
+    public void setPhoneNumber(String phone_number) { this.phone_number = phone_number; }
 
     public int getImg() { return this.img; }
     public String getName() {

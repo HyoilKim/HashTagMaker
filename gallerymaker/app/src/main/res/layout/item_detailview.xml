@@ -1,73 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp">
 
     <ImageView
-        android:id="@+id/detail_image1"
+        android:id="@+id/detail_img"
         android:layout_width="24dp"
         android:layout_height="97dp"
-        android:layout_gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
         android:layout_weight="1" />
+
     <TextView
         android:id="@+id/detail_name"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_width="301dp"
+        android:layout_height="53dp"
+        android:layout_below="@+id/detail_img"
+        android:layout_centerInParent="true"
+        android:gravity="center"
         android:layout_weight="2"
-        android:gravity="center_vertical"
         android:text="New Text"
         android:textColor="#000000"
         android:textSize="24sp" />
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/detail_call_img"
+        android:layout_width="92dp"
+        android:layout_height="85dp"
+        android:layout_below="@+id/detail_name"
+        android:layout_marginTop="1dp"
+        android:layout_weight="1"
+        android:src="@mipmap/ic_launcher_foreground" />
+
+    <ImageView
+        android:id="@+id/detail_message_img"
+        android:layout_width="92dp"
+        android:layout_height="85dp"
+        android:layout_below="@+id/detail_name"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="1dp"
+        android:layout_toRightOf="@id/detail_call_img"
+        android:layout_weight="1"
+        android:src="@mipmap/ic_launcher_foreground"/>
+
+    <ImageView
+        android:id="@+id/detail_video_img"
+        android:layout_width="92dp"
+        android:layout_height="85dp"
+        android:layout_below="@+id/detail_name"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="1dp"
+        android:layout_toRightOf="@id/detail_message_img"
+        android:layout_weight="1"
+        android:src="@mipmap/ic_launcher_foreground"/>
+
+    <ImageView
+        android:id="@+id/detail_mail_img"
+        android:layout_width="92dp"
+        android:layout_height="85dp"
+        android:layout_below="@+id/detail_name"
+        android:layout_marginLeft="2dp"
+        android:layout_marginTop="1dp"
+        android:layout_toRightOf="@id/detail_video_img"
+        android:layout_weight="1"
+        android:src="@mipmap/ic_launcher_foreground"/>
+
+    <TextView
+        android:id="@+id/detail_phoneNumber"
         android:layout_width="match_parent"
-        android:layout_height="258dp"
-        android:layout_weight="4"
-        android:orientation="horizontal">
-        <ImageView
-            android:id="@+id/detail_image2"
-            android:layout_width="24dp"
-            android:layout_height="97dp"
-            android:layout_weight="1" />
-        <ImageView
-            android:id="@+id/detail_image3"
-            android:layout_width="24dp"
-            android:layout_height="97dp"
-            android:layout_weight="1" />
-        <ImageView
-            android:id="@+id/detail_image4"
-            android:layout_width="24dp"
-            android:layout_height="97dp"
-            android:layout_weight="1" />
-        <ImageView
-            android:id="@+id/detail_image5"
-            android:layout_width="24dp"
-            android:layout_height="97dp"
-            android:layout_weight="1" />
+        android:layout_height="86dp"
+        android:layout_below="@+id/detail_call_img"
+        android:layout_weight="2"
+        android:text="New Text"
+        android:textColor="#000000"
+        android:textSize="24sp" />
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="143dp"
-        android:layout_height="match_parent"
-        android:layout_weight="4"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/detail_phoneNumber"
-            android:layout_width="match_parent"
-            android:layout_height="86dp"
-            android:layout_weight="2"
-            android:gravity="center_vertical"
-            android:text="New Text"
-            android:textColor="#000000"
-            android:textSize="24sp" />
-        <TextView
-            android:id="@+id/detail_memo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="New Text"
-            android:textColor="#666666"
-            android:textSize="16sp" />
+    <EditText
+        android:id="@+id/detail_memo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/detail_phoneNumber"
+        android:layout_weight="1"
+        android:text="memo"
+        android:textColor="#666666"
+        android:textSize="18sp" />
 
-    </LinearLayout>
-</LinearLayout>
+    <Button
+        android:id="@+id/detail_blocking"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/detail_memo"
+        android:text="Block"/>
+
+
+</RelativeLayout>

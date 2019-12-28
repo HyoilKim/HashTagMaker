@@ -1,22 +1,17 @@
 package com.example.gallerymaker;
 import android.graphics.drawable.Drawable;
+import android.widget.ImageView;
 
 public class ListViewItem {
-    private Drawable iconDrawable ;
     private String name ;
     private String phone_number ;
+    private int img;
 
-    public void setIcon(Drawable icon) {
-        iconDrawable = icon ;
-    }
-    public void setTitle(String name) {
-        this.name = name ;
-    }
+    public void setImg(int img) { this.img = img; }
+    public void setTitle(String name) { this.name = name; }
     public void setDesc(String phone_number) { this.phone_number = phone_number; }
 
-    public Drawable getIcon() {
-        return this.iconDrawable ;
-    }
+    public int getImg() { return this.img; }
     public String getName() {
         return this.name;
     }

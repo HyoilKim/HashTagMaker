@@ -1,6 +1,9 @@
 package com.example.gallerymaker.ui.home;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -23,6 +27,8 @@ import com.example.gallerymaker.ListViewItem;
 import com.example.gallerymaker.R;
 import com.example.gallerymaker.itemDetail;
 
+import java.io.ByteArrayOutputStream;
+
 public class HomeFragment extends ListFragment {
     ListViewAdapter adapter;
 
@@ -32,32 +38,15 @@ public class HomeFragment extends ListFragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         adapter = new ListViewAdapter() ;
-//        View view = inflater.inflate(R.layout.fragment_home, container, false);
-//        ListView listView = (ListView) view.findViewById(R.id.listview1);
         setListAdapter(adapter);
 
         // add item at list
-        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_dashboard_black_24dp),
+        adapter.addItem(R.drawable.ic_dashboard_black_24dp,
                 "김몰입", "010-7942-7041") ;
-        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_home_black_24dp),
+        adapter.addItem(R.drawable.ic_home_black_24dp,
                 "이몰입", "010-6354-1236") ;
-        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_notifications_black_24dp),
+        adapter.addItem(R.drawable.ic_notifications_black_24dp,
                 "정몰입", "010-6830-1232") ;
-
-        // ************* extends Fragment ************* //
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView parent, View v, int position, long id) {
-//                // get item
-//                ListViewItem item = (ListViewItem) parent.getItemAtPosition(position) ;
-//
-//                String name = item.getName() ;
-//                String phone_number = item.getPhoneNumber() ;
-//                Drawable iconDrawable = item.getIcon() ;
-//
-//                // TODO : use item data.
-//            }
-//        });
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -69,16 +58,15 @@ public class HomeFragment extends ListFragment {
 
         String name = item.getName() ;
         String phone_number = item.getPhoneNumber() ;
-        Drawable iconDrawable = item.getIcon() ;
-        Log.d("name", name);
+        int img = item.getImg();
+        // image transfer setting
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
         Intent intent = new Intent(getActivity().getApplicationContext(), itemDetail.class);
         intent.putExtra("name", name);
         intent.putExtra("phone_number", phone_number);
-//        intent.putExtra("icon", iconDrawable);
+        intent.putExtra("img", img);
         startActivity(intent);
 
-
-        // TODO : use item data.
     }
 }

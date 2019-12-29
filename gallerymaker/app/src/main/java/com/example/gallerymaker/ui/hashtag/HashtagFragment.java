@@ -26,6 +26,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
@@ -37,7 +38,6 @@ import com.example.gallerymaker.Result;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
-import org.opencv.android.OpenCVLoader;
 
 import java.io.File;
 import java.io.IOException;
@@ -78,7 +78,6 @@ public class HashtagFragment extends Fragment {
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        OpenCVLoader.initDebug();
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         tedPermission();
@@ -217,7 +216,7 @@ public class HashtagFragment extends Fragment {
         String imageFileName = "몰입캠프" + timeStamp + "_";
 
         // 이미지가 저장될 폴더 이름 ( blackJin )
-        File storageDir = new File(Environment.getExternalStorageDirectory() + "/몰입캠프/");
+        File storageDir = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "/몰입캠프/");
         if (!storageDir.exists()) storageDir.mkdirs();
 
         // 파일 생성
@@ -248,7 +247,36 @@ public class HashtagFragment extends Fragment {
 
         Bitmap bmRotated = rotateBitmap(originalBm, orientation);
         Log.d(TAG, "setImage : " + tempFile.getAbsolutePath());
-        imageView.setImageBitmap(bmRotated);
+        int viewHeight = 500;
+        int viewWidth = 500;
+        int sendsize = 224;
+        float width = bmRotated.getWidth();
+        float height = bmRotated.getHeight();
+        Bitmap bmResized1;
+        if(height<width) {
+            if (height > viewHeight) {
+                float percente = (float) (height / 100);
+                float scale = (float) (viewHeight / percente);
+                width *= (scale / 100);
+                height *= (scale / 100);
+                bmResized1 = Bitmap.createScaledBitmap(bmRotated, (int) width, (int) height, true);
+            } else {
+                bmResized1 = Bitmap.createScaledBitmap(bmRotated, (int) (width * ((float) viewHeight / height)), viewHeight, true);
+            }
+        }
+        else{
+            if(width>viewWidth){
+                float percente = (float) (width/100);
+                float scale = (float) (viewWidth / percente);
+                width *= (scale / 100);
+                height *= (scale / 100);
+                bmResized1 = Bitmap.createScaledBitmap(bmRotated, (int) width, (int) height, true);
+            } else {
+                bmResized1 = Bitmap.createScaledBitmap(bmRotated, viewWidth, (int)(height*((float)viewWidth/width)), true);
+            }
+        }
+        Bitmap bmResized2 = Bitmap.createScaledBitmap(bmRotated, sendsize, sendsize, true);
+        imageView.setImageBitmap(bmResized1);
 
 
         try {
@@ -258,9 +286,12 @@ public class HashtagFragment extends Fragment {
             Log.e("@@@", "Failed to create Classifier", e);
         }
 
-        result = mClassifier.classify(bmRotated);
+
+        TextView textview = view.findViewById(R.id.textView);
+        result = mClassifier.classify(bmResized2);
         answer = result.getHashtags();
         Log.d("", ""+answer);
+        textview.setText(answer);
 
 
 

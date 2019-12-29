@@ -26,7 +26,7 @@ public class Classifier {
     public static final int IMG_HEIGHT = 400;
     public static final int IMG_WIDTH = 400;
     private static final int NUM_CHANNEL = 1;
-    private static final int NUM_CLASSES = 17;
+    private static final int NUM_CLASSES = 18;
 
     private final Interpreter.Options options = new Interpreter.Options();
     private final Interpreter mInterpreter;

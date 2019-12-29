@@ -8,24 +8,26 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
+
 
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
-
+    public ArrayList<Integer> pictures = new ArrayList<>();
     // Keep all Images in array
-    public Integer[] mThumbIds = {
-            R.drawable.pic_1, R.drawable.pic_2,
-            R.drawable.pic_3, R.drawable.pic_4,
-            R.drawable.pic_5, R.drawable.pic_6,
-            R.drawable.pic_7, R.drawable.pic_8,
-            R.drawable.pic_9, R.drawable.pic_10,
-            R.drawable.pic_11, R.drawable.pic_12,
-            R.drawable.pic_13, R.drawable.pic_14,
-            R.drawable.pic_15, R.drawable.pic_16,
-            R.drawable.pic_17, R.drawable.pic_18,
-            R.drawable.pic_19, R.drawable.pic_20,
-            R.drawable.pic_21
-    };
+//    public Integer[] mThumbIds = {
+//            R.drawable.pic_1, R.drawable.pic_2,
+//            R.drawable.pic_3, R.drawable.pic_4,
+//            R.drawable.pic_5, R.drawable.pic_6,
+//            R.drawable.pic_7, R.drawable.pic_8,
+//            R.drawable.pic_9, R.drawable.pic_10,
+//            R.drawable.pic_11, R.drawable.pic_12,
+//            R.drawable.pic_13, R.drawable.pic_14,
+//            R.drawable.pic_15, R.drawable.pic_16,
+//            R.drawable.pic_17, R.drawable.pic_18,
+//            R.drawable.pic_19, R.drawable.pic_20,
+//            R.drawable.pic_21
+//    };
 
     // Constructor
     public ImageAdapter(Context c){
@@ -34,12 +36,12 @@ public class ImageAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mThumbIds.length;
+        return pictures.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mThumbIds[position];
+        return pictures.get(position);
     }
 
     @Override
@@ -51,7 +53,7 @@ public class ImageAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imageView = new ImageView(mContext);
-        imageView.setImageResource(mThumbIds[position]);
+        imageView.setImageResource(pictures.get(position));
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         imageView.setLayoutParams(new GridView.LayoutParams(320, 230));

@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.gallerymaker.ui.home.HomeFragment;
@@ -27,7 +28,8 @@ import java.io.InputStream;
 
 public class itemDetail extends AppCompatActivity {
     private ListView_ImageList profile_image_lIst = new ListView_ImageList();
-    private static final int UPDATE_ITEM = 2;
+    public static final int UPDATE_ITEM = 2;
+    public static final int EDIT = 1;
     private TextView name;
     private TextView phone_number;
     private ImageView img;
@@ -45,11 +47,11 @@ public class itemDetail extends AppCompatActivity {
         this.img = (ImageView) findViewById(R.id.detail_img);
         this.memo = (TextView) findViewById(R.id.detail_memo);
 
-        name.setText( intent.getStringExtra ("name") );
-        phone_number.setText( intent.getStringExtra ("phone_number") );
         this.imgIdx = intent.getIntExtra("img", 0);
+        phone_number.setText( intent.getStringExtra ("phone_number") );
+        name.setText( intent.getStringExtra ("name") );
         img.setImageResource( profile_image_lIst.getImg ( imgIdx ) );
-        memo.setText( getMemo ( getJson(), intent.getStringExtra ("phone_number") ) );
+        memo.setText( getMemo ( getJson(), intent.getStringExtra ("memo") ) );
     }
 
     @Override
@@ -68,16 +70,25 @@ public class itemDetail extends AppCompatActivity {
 
                 intent.putExtra("name", this.name.getText().toString());
                 intent.putExtra("phone_number", this.phone_number.getText().toString());
-
                 intent.putExtra("img", this.imgIdx);
-
                 intent.putExtra("memo", this.memo.getText().toString());
                 intent.putExtra("isBlock", intent.getStringExtra("isBlock"));
                 startActivityForResult(intent, UPDATE_ITEM);
-
                 return true;
-
             default: return false;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("itemdetail", "callback" + resultCode);
+        if(resultCode == EDIT) {
+            imgIdx = data.getIntExtra("img", 0);
+            img.setImageResource(profile_image_lIst.getImg(imgIdx));
+            name.setText(data.getStringExtra("name"));
+            phone_number.setText(data.getStringExtra("phone_number"));
+            memo.setText(getMemo(getJson(), data.getStringExtra("memo")));
         }
     }
 

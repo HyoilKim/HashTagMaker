@@ -91,7 +91,6 @@ public class HomeFragment extends ListFragment {
 //        onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADD_ITEM) {
             // json 다시 읽어오기
-            Log.d("asdf","123123");
             jsonParsing(getJson());
             adapter.notifyDataSetChanged();
 
@@ -114,7 +113,7 @@ public class HomeFragment extends ListFragment {
         intent.putExtra("name", name);
         intent.putExtra("phone_number", phone_number);
         intent.putExtra("img", img);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
 
     }
 

@@ -12,5 +12,6 @@ public class ListView_ImageList {
     }
 
     public int getImg(int i) { return this.profile_image_lIst.get(i); }
+    public void addImg(int img) { profile_image_lIst.add(img); }
     public void setImg(int i, int img) { profile_image_lIst.set(i, img); }
 }

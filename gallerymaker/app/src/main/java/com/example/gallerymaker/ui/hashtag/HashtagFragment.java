@@ -47,9 +47,9 @@ import java.util.Date;
 
 
 public class HashtagFragment extends Fragment {
-    private static final String TAG = "blackjin";
+    private static final String TAG = "몰입캠프";
     private Boolean isPermission = true;
-    public View view;
+    private View view;
     private static final int PICK_FROM_ALBUM = 1;
     private static final int PICK_FROM_CAMERA = 2;
     private File tempFile;

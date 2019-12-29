@@ -13,7 +13,7 @@ public class Result {
         mTimeCost = timeCost;
     }
     public String[] getAllHashtags() {
-        return new String[]{"fashion", "selfie" , "ulzzang" , "smile",  "selca", "music", "ootd", "food", "art", "me", "girl",  "nature", "cute","friends", "boy", "catstagram", "dogstagram", "caturday", "doge"};
+        return new String[]{"fashion", "ootd", "daily", "food", "yummy", "foodstagram", "me", "selfie", "ulzzang", "catstagram", "caturday", "catoftheday", "dogstagram", "doge", "puppylove", "instagood", "picoftheday", "f4f"};
     }
 
     public String[] getGoodHashtags(String[] mallHashtags, int[] mNumber) {

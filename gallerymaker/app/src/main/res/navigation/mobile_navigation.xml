@@ -15,11 +15,11 @@
         android:id="@+id/navigation_gallery"
         android:name="com.example.gallerymaker.ui.gallery.GalleryFragment"
         android:label="@string/title_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/grid_layout" />
 
     <fragment
         android:id="@+id/navigation_hashtag"
         android:name="com.example.gallerymaker.ui.hashtag.HashtagFragment"
         android:label="@string/title_hashtag"
-        tools:layout="@layout/fragment_hashtag" />
+        tools:layout="@layout/activity_get_image" />
 </navigation>

@@ -42,41 +42,28 @@ public class Result {
                 maxIdx1 = i;
             }
         }
-        float[] probs2 = new float[probs.length -1];
-        int k=0;
-        for (int i = 0; i < probs.length; i++) {
-            if (i == maxIdx1) {
-                k=1;
-            }
-            else {
-                probs2[i - k] = probs[i];
-            }
-        }
+
         int maxIdx2 = -1;
         float maxProb2 = 0.0f;
-        for (int i = 0; i < probs2.length; i++) {
-            if (probs2[i] > maxProb2) {
-                maxProb2 = probs2[i];
+        for (int i = 0; i < probs.length; i++) {
+            if(i == maxIdx1){
+                continue;
+            }
+            else if (probs[i] > maxProb2) {
+                maxProb2 = probs[i];
                 maxIdx2 = i;
             }
         }
 
 
-        float[] probs3 = new float[probs2.length -1];
-        k=0;
-        for (int i = 0; i < probs2.length; i++) {
-            if (i == maxIdx1) {
-                k=1;
-            }
-            else {
-                probs3[i - k] = probs2[i];
-            }
-        }
         int maxIdx3 = -1;
         float maxProb3 = 0.0f;
-        for (int i = 0; i < probs3.length; i++) {
-            if (probs3[i] > maxProb3) {
-                maxProb3 = probs3[i];
+        for (int i = 0; i < probs.length; i++) {
+            if(i == maxIdx1 || i == maxIdx2){
+                continue;
+            }
+            else if (probs[i] > maxProb3) {
+                maxProb3 = probs[i];
                 maxIdx3 = i;
             }
         }

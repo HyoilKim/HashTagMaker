@@ -1,17 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android = "http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
 
-<GridView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/grid_view"
-    android:layout_width="match_parent"
-    android:layout_height="400dp"
-    android:numColumns="auto_fit"
-    android:columnWidth="90dp"
-    android:scrollbarStyle="insideInset"
-    android:horizontalSpacing="10dp"
-    android:verticalSpacing="10dp"
-    android:gravity="center"
-    android:stretchMode="columnWidth"
-    android:padding = "0dp"
-    android:listSelector="@null"
-    android:scrollbars="horizontal|vertical">
-</GridView>
+    <Button
+        android:id="@+id/gallerybtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:text="갤러리"
+        app:layout_constraintBottom_toTopOf="@+id/grid_view"
+        app:layout_constraintLeft_toLeftOf="@+id/grid_view"
+        app:layout_constraintRight_toLeftOf="@id/camerbtn"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/camerbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:text="카메라"
+        app:layout_constraintBottom_toTopOf="@+id/grid_view"
+        app:layout_constraintLeft_toRightOf="@id/gallerybtn"
+        app:layout_constraintRight_toRightOf="@id/grid_view"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <GridView
+        android:id="@+id/grid_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnWidth="90dp"
+        android:gravity="center"
+        android:horizontalSpacing="10dp"
+        android:listSelector="@null"
+        android:numColumns="auto_fit"
+        android:padding="0dp"
+        android:scrollbarStyle="insideInset"
+        android:scrollbars="horizontal|vertical"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="10dp"
+        android:layout_marginTop="80dp">
+
+    </GridView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

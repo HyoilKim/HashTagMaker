@@ -8,10 +8,12 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
 
 public class ImageAdapter extends BaseAdapter {
-    private Context mContext;
 
+    private Context mContext;
+    public ArrayList<Integer> pictures = new ArrayList<>();
     // Keep all Images in array
     public Integer[] mThumbIds = {
             R.drawable.pic_1, R.drawable.pic_2,
@@ -26,7 +28,6 @@ public class ImageAdapter extends BaseAdapter {
             R.drawable.pic_19, R.drawable.pic_20,
             R.drawable.pic_21
     };
-
     // Constructor
     public ImageAdapter(Context c){
         mContext = c;
@@ -34,12 +35,12 @@ public class ImageAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mThumbIds.length;
+        return pictures.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mThumbIds[position];
+        return pictures.get(position);
     }
 
     @Override
@@ -50,8 +51,10 @@ public class ImageAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         ImageView imageView = new ImageView(mContext);
-        imageView.setImageResource(mThumbIds[position]);
+
+        imageView.setImageResource(pictures.get(position));
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         imageView.setLayoutParams(new GridView.LayoutParams(320, 230));

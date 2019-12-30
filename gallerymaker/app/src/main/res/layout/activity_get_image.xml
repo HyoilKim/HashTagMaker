@@ -9,7 +9,7 @@
         android:id="@+id/imageView123"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/llBottomNav"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -18,8 +18,8 @@
         android:id="@+id/llBottomNav"
         android:layout_width="0dp"
         android:layout_height="80dp"
-        android:layout_marginBottom="60dp"
-        android:background="#96000000"
+        android:layout_marginBottom="80dp"
+        android:background="#949090"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -28,26 +28,37 @@
         app:layout_constraintStart_toStartOf="parent">
 
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnGallery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Gallery"
-            tools:layout_editor_absoluteX="118dp"
-            tools:layout_editor_absoluteY="587dp" />
+            android:layout_marginRight="40dp"
+            android:text="갤러리"
+            android:textColor="#050505"
+            app:backgroundTint="#E7E6E6" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCamera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Camera"
-            tools:layout_editor_absoluteX="206dp"
-            tools:layout_editor_absoluteY="587dp" />
+            android:text="카메라"
+            android:textColor="#050505"
+            app:backgroundTint="#E7E6E6" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        app:layout_constraintBottom_toTopOf="@+id/llBottomNav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView123" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

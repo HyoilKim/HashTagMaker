@@ -6,36 +6,45 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
+import android.hardware.camera2.CameraCaptureSession;
+import android.hardware.camera2.CameraDevice;
+import android.hardware.camera2.CaptureRequest;
+import android.media.ExifInterface;
+import android.media.ImageReader;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
+import com.example.gallerymaker.Classifier;
 import com.example.gallerymaker.R;
+import com.example.gallerymaker.Result;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
+
 import java.io.File;
 import java.io.IOException;
-import java.security.Permission;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
 
 public class HashtagFragment extends Fragment {
     private static final String TAG = "blackjin";
@@ -45,11 +54,34 @@ public class HashtagFragment extends Fragment {
     private static final int PICK_FROM_CAMERA = 2;
     private File tempFile;
 
+
+    private SurfaceView mSurfaceView, mSurfaceView_transparent;
+    private SurfaceHolder mSurfaceViewHolder, mSurfaceViewHolder_transparent;
+    private Handler mHandler;
+    private ImageReader mImageReader;
+    private CameraDevice mCameraDevice;
+    private CaptureRequest.Builder mPreviewBuilder;
+    private CameraCaptureSession mSession;
+    private int mDeviceRotation;
+    private Sensor mAccelerometer;
+    private Sensor mMagnetometer;
+    private SensorManager mSensorManager;
+    //private DeviceOrientation deviceOrientation;
+    int mDSI_height, mDSI_width;
+    int  deviceHeight,deviceWidth;
+    int previewHeight, previewWidth;
+    private int RectLeft, RectTop,RectRight,RectBottom ;
+    int imageWidth=400;
+    int imageHeight=400;
+
+
+
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         tedPermission();
+
         view = inflater.inflate(R.layout.activity_get_image, container, false);
         view.findViewById(R.id.btnGallery).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,7 +192,7 @@ public class HashtagFragment extends Fragment {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
 
                 Uri photoUri = FileProvider.getUriForFile(getActivity(),
-                        "{package name}.provider", tempFile);
+                        "gallerymaker.provider", tempFile);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                 startActivityForResult(intent, PICK_FROM_CAMERA);
 
@@ -181,10 +213,10 @@ public class HashtagFragment extends Fragment {
 
         // 이미지 파일 이름 ( blackJin_{시간}_ )
         String timeStamp = new SimpleDateFormat("HHmmss").format(new Date());
-        String imageFileName = "blackJin_" + timeStamp + "_";
+        String imageFileName = "몰입캠프" + timeStamp + "_";
 
         // 이미지가 저장될 폴더 이름 ( blackJin )
-        File storageDir = new File(Environment.getExternalStorageDirectory() + "/blackJin/");
+        File storageDir = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "/몰입캠프/");
         if (!storageDir.exists()) storageDir.mkdirs();
 
         // 파일 생성
@@ -194,18 +226,74 @@ public class HashtagFragment extends Fragment {
         return image;
     }
 
+    private Classifier mClassifier;
+    private Result result;
+    private String answer;
     /**
      *  tempFile 을 bitmap 으로 변환 후 ImageView 에 설정한다.
      */
     public void setImage() {
-
         ImageView imageView = view.findViewById(R.id.imageView123);
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
-        Log.d(TAG, "setImage : " + tempFile.getAbsolutePath());
+        ExifInterface exif = null;
+        try {
+            exif = new ExifInterface(tempFile.getAbsolutePath());
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
 
-        imageView.setImageBitmap(originalBm);
+        Bitmap bmRotated = rotateBitmap(originalBm, orientation);
+        Log.d(TAG, "setImage : " + tempFile.getAbsolutePath());
+        int viewHeight = 500;
+        int viewWidth = 500;
+        int sendsize = 224;
+        float width = bmRotated.getWidth();
+        float height = bmRotated.getHeight();
+        Bitmap bmResized1;
+        if(height<width) {
+            if (height > viewHeight) {
+                float percente = (float) (height / 100);
+                float scale = (float) (viewHeight / percente);
+                width *= (scale / 100);
+                height *= (scale / 100);
+                bmResized1 = Bitmap.createScaledBitmap(bmRotated, (int) width, (int) height, true);
+            } else {
+                bmResized1 = Bitmap.createScaledBitmap(bmRotated, (int) (width * ((float) viewHeight / height)), viewHeight, true);
+            }
+        }
+        else{
+            if(width>viewWidth){
+                float percente = (float) (width/100);
+                float scale = (float) (viewWidth / percente);
+                width *= (scale / 100);
+                height *= (scale / 100);
+                bmResized1 = Bitmap.createScaledBitmap(bmRotated, (int) width, (int) height, true);
+            } else {
+                bmResized1 = Bitmap.createScaledBitmap(bmRotated, viewWidth, (int)(height*((float)viewWidth/width)), true);
+            }
+        }
+        Bitmap bmResized2 = Bitmap.createScaledBitmap(bmRotated, sendsize, sendsize, true);
+        imageView.setImageBitmap(bmResized1);
+
+
+        try {
+            mClassifier = new Classifier(getActivity());
+        } catch (IOException e) {
+            Toast.makeText(getActivity(),"Failed to create Classifier", Toast.LENGTH_LONG).show();
+            Log.e("@@@", "Failed to create Classifier", e);
+        }
+
+
+        TextView textview = view.findViewById(R.id.textView);
+        result = mClassifier.classify(bmResized2);
+        answer = result.getHashtags();
+        Log.d("", ""+answer);
+        textview.setText(answer);
+
+
 
         /**
          *  tempFile 사용 후 null 처리를 해줘야 합니다.
@@ -215,11 +303,53 @@ public class HashtagFragment extends Fragment {
         if (tempFile == null) {
             Toast.makeText(getActivity(), "실패", Toast.LENGTH_SHORT).show();
         }
-        Toast.makeText(getActivity(), "성공", Toast.LENGTH_SHORT).show();
         tempFile = null;
 
     }
 
+    //회전
+    public static Bitmap rotateBitmap(Bitmap bitmap, int orientation) {
+        Matrix matrix = new Matrix();
+        switch (orientation){
+            case ExifInterface.ORIENTATION_NORMAL:
+                return bitmap;
+            case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
+                matrix.setScale(-1,1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                matrix.setRotate(180);
+                break;
+            case ExifInterface.ORIENTATION_FLIP_VERTICAL:
+                matrix.setRotate(180);
+                matrix.postScale(-1,1);
+                break;
+            case ExifInterface.ORIENTATION_TRANSPOSE:
+                matrix.setRotate(90);
+                matrix.postScale(-1,1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                matrix.setRotate(90);
+                break;
+            case ExifInterface.ORIENTATION_TRANSVERSE:
+                matrix.setRotate(-90);
+                matrix.postScale(-1,1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                matrix.setRotate(-90);
+                break;
+            default:
+                return bitmap;
+        }
+        try{
+            Bitmap bmRotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            bitmap.recycle();
+            return bmRotated;
+        }
+        catch (OutOfMemoryError e){
+            e.printStackTrace();
+            return null;
+        }
+    }
     /**
      *  권한 설정
      */
@@ -249,4 +379,5 @@ public class HashtagFragment extends Fragment {
                 .check();
 
     }
+
 }

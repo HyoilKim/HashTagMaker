@@ -4,10 +4,6 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<<<<<<< HEAD
-=======
-<!--    android:paddingTop="?attr/actionBarSize">-->
->>>>>>> d1a556eb8e7e1b63e81f4526067629a0cc255e26
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
@@ -34,7 +30,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         android:layout_marginTop="0dp"
-        app:navGraph="@navigation/mobile_navigation" />
+        app:navGraph="@navigation/mobile_navigation"
+        android:layout_marginBottom="63dp"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

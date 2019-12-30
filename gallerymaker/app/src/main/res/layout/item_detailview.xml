@@ -10,7 +10,8 @@
         android:layout_height="97dp"
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:layout_marginTop="15dp"/>
 
     <TextView
         android:id="@+id/detail_name"
@@ -19,79 +20,88 @@
         android:layout_below="@+id/detail_img"
         android:layout_centerInParent="true"
         android:gravity="center"
+        android:hint="name"
         android:layout_weight="2"
-        android:text="New Text"
         android:textColor="#000000"
-        android:textSize="24sp" />
+        android:textSize="30sp" />
 
     <ImageView
         android:id="@+id/detail_call_img"
-        android:layout_width="92dp"
-        android:layout_height="85dp"
+        android:layout_width="74dp"
+        android:layout_height="70dp"
         android:layout_below="@+id/detail_name"
-        android:layout_marginTop="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="6dp"
         android:layout_weight="1"
-        android:src="@drawable/call_img"/>
+        android:src="@drawable/call_img" />
 
     <ImageView
         android:id="@+id/detail_message_img"
         android:layout_width="48dp"
         android:layout_height="57dp"
         android:layout_below="@+id/detail_name"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="19dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="20dp"
         android:layout_toRightOf="@id/detail_call_img"
         android:layout_weight="1"
         android:src="@drawable/envelope" />
 
     <ImageView
         android:id="@+id/detail_video_img"
-        android:layout_width="48dp"
-        android:layout_height="57dp"
+        android:layout_width="52dp"
+        android:layout_height="61dp"
         android:layout_below="@+id/detail_name"
-        android:layout_marginLeft="46dp"
-        android:layout_marginTop="17dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginRight="20dp"
         android:layout_toRightOf="@id/detail_message_img"
         android:layout_weight="1"
         android:src="@drawable/video_call" />
 
     <ImageView
         android:id="@+id/detail_mail_img"
-        android:layout_width="48dp"
-        android:layout_height="57dp"
+        android:layout_width="65dp"
+        android:layout_height="43dp"
         android:layout_below="@+id/detail_name"
-        android:layout_marginLeft="45dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginRight="20dp"
         android:layout_toRightOf="@id/detail_video_img"
         android:layout_weight="1"
         android:src="@drawable/email" />
 
-    <TextView
+    <EditText
         android:id="@+id/detail_phoneNumber"
         android:layout_width="match_parent"
-        android:layout_height="86dp"
+        android:layout_height="61dp"
         android:layout_below="@+id/detail_call_img"
         android:layout_weight="2"
-        android:text="New Text"
+        android:hint="PhoneNumber"
         android:textColor="#000000"
-        android:textSize="24sp" />
+        android:textSize="20sp"
+        android:focusableInTouchMode="false"/>
 
     <EditText
         android:id="@+id/detail_memo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="67dp"
         android:layout_below="@+id/detail_phoneNumber"
         android:layout_weight="1"
-        android:text="memo"
-        android:textColor="#666666"
-        android:textSize="18sp" />
+        android:hint="memo"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:focusableInTouchMode="false"
+        />
 
     <Button
         android:id="@+id/detail_blocking"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/detail_memo"
-        android:text="Block"/>
+        android:layout_marginBottom="15dp"
+        android:text="Block"
+        android:layout_marginTop="10dp"/>
 
 
 </RelativeLayout>

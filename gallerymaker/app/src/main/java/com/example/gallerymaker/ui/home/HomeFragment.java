@@ -50,18 +50,28 @@ import java.io.InputStream;
 public class HomeFragment extends ListFragment {
     private String memo;
     private boolean isBlock;
-    private ListViewAdapter adapter;
-    public static final int ADD_ITEM = 1;
+    public static ListViewAdapter adapter;
+//
+//    setListAdapter(adapter);
+
+    public static final int ADD_ITEM = 2;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        Log.d("on Create","start");
+        Log.d("@@",getActivity().toString());
+        Log.d("@@",getFragmentManager().getFragments().toString());
+        Log.d("@@",getFragmentManager().getFragments().toString());
+//        // nav fragment
+        Log.d("@@", String.valueOf(getFragmentManager().getFragments().get(0).getId()));
 
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // show listView from json
         jsonParsing(getJson());
+        Log.d("on CreateView","start");
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -79,20 +89,22 @@ public class HomeFragment extends ListFragment {
             case R.id.add_bar:
                 Log.d("add_bar", "clicked");
                 Intent intent = new Intent(getActivity(), add_item.class);
-                getActivity().startActivityForResult(intent, ADD_ITEM);
+                startActivityForResult(intent, ADD_ITEM);
                 return true;
             default: return false;
         }
     }
 
-    // 아이템 추가 화면에서 ok를 눌렀을 경우
+    // 전화번호 아이템이 추가된 이후 실행하는 call back
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ADD_ITEM) {
-            // json 다시 읽어오기
-            jsonParsing(getJson());
-            adapter.notifyDataSetChanged();
+        super.onActivityResult(requestCode, resultCode, data);
+        switch ( resultCode ) {
+            case ADD_ITEM:
+                // json 다시 읽어오기
+                jsonParsing(getJson());
+                break;
+            default: break;
 
         }
     }

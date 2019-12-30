@@ -55,7 +55,7 @@ public class add_item extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch ( item.getItemId() ) {
             case R.id.ok_bar:
-                Log.d("ok_bar", "clicked");
+                Log.d("complete_add_bar", "clicked");
 
                 // 추가 할 연락처 정보 listView에 넘기기
                 EditText nameView = (EditText)findViewById(R.id.add_name);
@@ -73,7 +73,10 @@ public class add_item extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+                Intent intent = new Intent(add_item.this, MainActivity.class);
+                setResult(HomeFragment.ADD_ITEM, intent);
                 finish();
+
                 return true;
             default: return false;
         }
@@ -116,6 +119,15 @@ public class add_item extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+//        Log.d("adpater","changed");
+//        HomeFragment.adapter.notifyDataSetChanged();
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                HomeFragment.adapter.notifyDataSetChanged();
+//            }
+//        });
+
     }
 
     public void sortJsonArray(JSONArray jsonArray) {

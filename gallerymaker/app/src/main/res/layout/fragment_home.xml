@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:layout_marginBottom="50dp">
+    android:id="@+id/firstTab"
+    android:tag="firstTab">
 
     <TextView
         android:id="@+id/text_home"
@@ -22,6 +23,10 @@
     <ListView
         android:id="@+id/listview1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:dividerHeight="10.0sp"
+        android:layout_marginBottom="50dp"
+        android:paddingBottom="50dp"
+        android:clipToPadding="false"/>
 
 </LinearLayout>

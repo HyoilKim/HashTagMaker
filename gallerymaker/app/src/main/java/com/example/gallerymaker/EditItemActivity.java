@@ -42,6 +42,11 @@ public class EditItemActivity extends AppCompatActivity {
     private ImageView img;
     private int imgIdx;
 
+    private String tmpName;
+    private String tmpMemo;
+    private String tmpPhoneNumber;
+    private int tmpImgIdx;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,11 +58,15 @@ public class EditItemActivity extends AppCompatActivity {
         this.img = (ImageView) findViewById(R.id.edit_img);
         this.memo = (EditText) findViewById(R.id.edit_memo);
 
-        this.imgIdx = intent.getIntExtra("img", 0);
+        this.tmpImgIdx = this.imgIdx = intent.getIntExtra("img", 0);
         img.setImageResource( profile_image_lIst.getImg (imgIdx) );
-        name.setText( intent.getStringExtra ("name") );
-        phoneNumber.setText( intent.getStringExtra ("phone_number") );
-        memo.setText( intent.getStringExtra("memo") );
+
+        this.tmpName = intent.getStringExtra("name");
+        this.tmpPhoneNumber = intent.getStringExtra("phone_number");
+        this.tmpMemo = intent.getStringExtra("memo");
+        name.setText(tmpName);
+        phoneNumber.setText(tmpPhoneNumber);
+        memo.setText(tmpMemo);
 
         // 클릭시 json에 있는 item정보 삭제
         Button deleteItemButton = (Button) findViewById(R.id.edit_delete);
@@ -129,22 +138,63 @@ public class EditItemActivity extends AppCompatActivity {
             case R.id.ok_bar:
                 Log.d("ok button", "at edit view");
                 // item detail에 전송
-                Intent intent = new Intent();
-
-                intent.putExtra("name", this.name.getText().toString());
-                intent.putExtra("phone_number", this.phoneNumber.getText().toString());
-                intent.putExtra("img", this.imgIdx);
-                intent.putExtra("memo", this.memo.getText().toString());
-                setResult(EDIT, intent);                                               // 필수(이유 모름)
-
                 // json 수정
+                try {
+                    String json = "";
+                    String str = "";
+                    BufferedReader br = new BufferedReader(new FileReader(getFilesDir()+"phoneBook.txt"));
+                    while(( ( str = br.readLine() ) != null )) {
+                        json += str + "\n";
+                    }
+
+                    // array -> list
+                    JSONArray jsonArray = new JSONArray(json);
+                    ArrayList<JSONObject> jsonList = new ArrayList<>();
+                    for (int i = 0; i < jsonArray.length(); i++) jsonList.add((JSONObject) jsonArray.get(i));
+
+                    // 수정 전의 item정보와 json의 정보가 같으면 object수정
+                    String newPhoneNumber = phoneNumber.getText().toString();
+                    String newName = name.getText().toString();
+                    String newMemo = memo.getText().toString();
+                    int newimg = imgIdx;
+
+                    for (int i = 0; i < jsonList.size(); i++) {
+                        JSONObject obj = jsonList.get(i);
+                        if( tmpPhoneNumber.equals(obj.getString("phone_number")) &&
+                                tmpName.equals(obj.getString("name")) && tmpMemo.equals(obj.getString("memo")) ) {
+                            Log.d("same idx", i+"");
+                            JSONObject tmpObj = new JSONObject();
+                            tmpObj.put("img", newimg);
+                            tmpObj.put("name", newName);
+                            tmpObj.put("phone_number", newPhoneNumber);
+                            tmpObj.put("memo", newMemo);
+                            tmpObj.put("isBlock", false);
+                            jsonList.set(i, tmpObj);
+                            break;
+                        }
+                    }
+                    // 삭제한 내용을 다시 json file에 저장
+                    JSONArray updateJsonArray = new JSONArray();
+                    for (JSONObject o : jsonList) updateJsonArray.put(o);
+
+                    BufferedWriter bw = new BufferedWriter(new FileWriter(getFilesDir() + "phoneBook.txt", false));
+                    bw.write(updateJsonArray.toString());
+                    bw.close();
+
+                    //activity 2개 닫기
+                    finish();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 finish();
                 return true;
 
             default: return false;
         }
     }
-
-
-
 }

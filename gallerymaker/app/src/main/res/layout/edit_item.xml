@@ -48,20 +48,13 @@
         android:layout_margin="20dp"/>
 
     <Button
-        android:id="@+id/edit_blocking"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/edit_memo"
-        android:text="Block"
-        android:layout_margin="20dp"/>
-
-    <Button
         android:id="@+id/edit_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/edit_memo"
-        android:layout_toRightOf="@+id/edit_blocking"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
         android:text="Delete"
-        android:layout_margin="20dp"/>
+        android:layout_margin="15dp"/>
 
 </RelativeLayout>

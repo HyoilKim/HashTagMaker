@@ -105,6 +105,7 @@ public class HomeFragment extends ListFragment {
 
         String name = item.getName() ;
         String phone_number = item.getPhoneNumber() ;
+        String memo = item.getMemo();
         int img = item.getImg();
         // image transfer setting
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -113,6 +114,7 @@ public class HomeFragment extends ListFragment {
         intent.putExtra("name", name);
         intent.putExtra("phone_number", phone_number);
         intent.putExtra("img", img);
+        intent.putExtra("memo", memo);
         startActivityForResult(intent, 1);
 
     }

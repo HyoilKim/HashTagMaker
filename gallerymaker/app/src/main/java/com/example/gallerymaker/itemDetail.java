@@ -23,6 +23,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -51,7 +54,7 @@ public class itemDetail extends AppCompatActivity {
         phone_number.setText( intent.getStringExtra ("phone_number") );
         name.setText( intent.getStringExtra ("name") );
         img.setImageResource( profile_image_lIst.getImg ( imgIdx ) );
-        memo.setText( getMemo ( getJson(), intent.getStringExtra ("memo") ) );
+        memo.setText( getMemo ( getJson(), intent.getStringExtra ("phone_number") ) );
     }
 
     @Override
@@ -94,33 +97,36 @@ public class itemDetail extends AppCompatActivity {
 
     public String getJson() {
         String json = "";
+        BufferedReader br = null;
         try {
-            InputStream is = getResources().getAssets().open("phone_Book.json");
-            int fileSize = is.available();
-
-            byte[] buffer = new byte[fileSize];
-            is.read(buffer);
-            is.close();
-
-            json = new String(buffer, "UTF-8");
-        } catch (IOException ex) {
-            ex.printStackTrace();
+            br = new BufferedReader(new FileReader(getFilesDir()+"phoneBook.txt"));
+            String str = null;
+            while(( ( str = br.readLine() ) != null )) {
+                json += str +"\n";
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return json;
     }
 
+    // json 파일 속 phone_number에 해당하는 memo 반환
     public String getMemo(String json, String phone_number)
     {
         try{
             JSONArray phoneBook_list = new JSONArray(json);
             for(int i = 0; i < phoneBook_list.length(); i++) {
                 JSONObject item = phoneBook_list.getJSONObject(i);
+//                Log.d("json phonNumber", item.getString("phone_number"));
+//                Log.d("original phoneNumber", phone_number);
                 if ( item.getString("phone_number").equals(phone_number) ) {
+                    Log.d("memo", item.getString("memo"));
                     return item.getString("memo");
                 }
             }
-
         }catch (JSONException e) {
             e.printStackTrace();
         }

@@ -22,6 +22,7 @@ public class CustomAdapter extends PagerAdapter {
         this.inflater=inflater;
     }
 
+
     //PagerAdapter가 가지고 잇는 View의 개수를 리턴
     //보통 보여줘야하는 이미지 배열 데이터의 길이를 리턴
     @Override
@@ -53,7 +54,6 @@ public class CustomAdapter extends PagerAdapter {
         mAttacher = new PhotoViewAttacher(img);
         //ViewPager에 만들어 낸 View 추가
         container.addView(view);
-
         //Image가 세팅된 View를 리턴
         return view;
     }

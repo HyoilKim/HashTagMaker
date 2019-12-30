@@ -14,9 +14,9 @@ import com.example.gallerymaker.ui.gallery.GalleryFragment;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 public class FullImageActivity extends AppCompatActivity {
+    public static int position;
     PhotoViewAttacher mAttacher;
     ViewPager pager;
-    private int position;
     private CustomAdapter adapter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +53,7 @@ public class FullImageActivity extends AppCompatActivity {
 
 
     public void onClick_delete(View view){
+        position = pager.getCurrentItem();
         new AlertDialog.Builder(this)
                 .setTitle("몰입캠프>갤러리")
                 .setMessage("삭제하시겠습니까?")

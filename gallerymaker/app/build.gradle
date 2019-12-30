@@ -5,7 +5,7 @@ android {
     buildToolsVersion "28.0.3"
     defaultConfig {
         applicationId "com.example.gallerymaker"
-        minSdkVersion 21
+        minSdkVersion 22
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -48,4 +48,5 @@ dependencies {
     implementation "gun0912.ted:tedpermission:2.1.0"
     implementation "org.tensorflow:tensorflow-lite:1.13.1"
     implementation "androidx.viewpager:viewpager:1.0.0"
+    implementation "androidx.exifinterface:exifinterface:1.0.0"
 }

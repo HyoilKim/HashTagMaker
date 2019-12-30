@@ -49,6 +49,7 @@ public class GalleryFragment extends Fragment {
     private View view;
     private static final int PICK_FROM_ALBUM = 1;
     private static final int PICK_FROM_CAMERA = 2;
+    private static final int FULL_SCREEN = 3;
     private File tempFile;
     private GridView gridView;
     private View gridviewitem;
@@ -59,60 +60,14 @@ public class GalleryFragment extends Fragment {
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+
         view = inflater.inflate(R.layout.grid_layout, container, false);
         gridviewitem = inflater.inflate(R.layout.gridview_item, container, false);
         gridView = (GridView) view.findViewById(R.id.grid_view);
-
-
-
         imageAdapterinfrag = ((MainActivity)getActivity()).imageAdapter;
         // Instance of ImageAdapter Class
         gridView.setAdapter(imageAdapterinfrag);
 
-
-
-//        final CharSequence[] galorcam = {"갤러리", "카메라"};
-//
-//        view.findViewById(R.id.addimage).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                AlertDialog.Builder oDialog = new AlertDialog.Builder(getContext(), android.R.style.Theme_DeviceDefault_Light_Dialog_Alert);
-//                oDialog.setTitle("사진 가져오기")
-//                        .setItems(galorcam, new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                String selectedText = galorcam[which].toString();
-//                                if(selectedText == "갤러리"){
-//                                    if(isPermission) goToAlbum();
-//                                    else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
-//                                }
-//                                else{
-//                                    if(isPermission)  takePhoto();
-//                                    else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
-//                                }
-//                            }
-//                        })
-//                        .show();
-//            }
-//        });
-//
-//        view.findViewById(R.id.gallerybtn).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
-//                if(isPermission) goToAlbum();
-//                else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
-//            }
-//        });
-//
-//        view.findViewById(R.id.camerbtn).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
-//                if(isPermission)  takePhoto();
-//                else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
-//            }
-//        });
         /**
          * On Click event for Single Gridview Item
          * */
@@ -125,7 +80,7 @@ public class GalleryFragment extends Fragment {
                 Intent i = new Intent(getActivity().getApplicationContext(), FullImageActivity.class);
                 // passing array index
                 i.putExtra("id", position);
-                startActivity(i);
+                startActivityForResult(i, FULL_SCREEN);
             }
         });
         return view;
@@ -138,6 +93,7 @@ public class GalleryFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         switch (item.getItemId()){
             case R.id.addpic:
+                tedPermission();
                 final CharSequence[] galorcam = {"갤러리", "카메라"};
                 AlertDialog.Builder oDialog = new AlertDialog.Builder(getContext(), android.R.style.Theme_DeviceDefault_Light_Dialog_Alert);
                 oDialog.setTitle("사진 가져오기")
@@ -161,7 +117,10 @@ public class GalleryFragment extends Fragment {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK) {
+        if (requestCode == FULL_SCREEN){
+            gridView.setAdapter(imageAdapterinfrag);
+        }
+        else if (resultCode != Activity.RESULT_OK) {
             Toast.makeText(getView().getContext(), "취소 되었습니다.", Toast.LENGTH_SHORT).show();
 
             if(tempFile != null) {
@@ -216,6 +175,7 @@ public class GalleryFragment extends Fragment {
             setImage();
 
         }
+
     }
 
     /**

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp">
+
+    <ImageView
+        android:id="@+id/add_img"
+        android:layout_width="97dp"
+        android:layout_height="97dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_weight="1"
+        android:layout_margin="20dp"
+        android:src="@drawable/user"/>
+
+    <EditText
+        android:id="@+id/add_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/add_img"
+        android:layout_weight="1"
+        android:hint="name"
+        android:textColor="#666666"
+        android:textSize="18sp"
+        android:layout_margin="20dp"/>
+
+    <EditText
+        android:id="@+id/add_phoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/add_name"
+        android:layout_weight="1"
+        android:hint="phoneNumber"
+        android:textColor="#666666"
+        android:textSize="18sp"
+        android:layout_margin="20dp"/>
+
+    <EditText
+        android:id="@+id/add_memo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/add_phoneNumber"
+        android:layout_weight="1"
+        android:hint="memo"
+        android:textColor="#666666"
+        android:textSize="18sp"
+        android:layout_margin="20dp"/>
+</RelativeLayout>

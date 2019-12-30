@@ -14,11 +14,11 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class MainActivity extends AppCompatActivity {
     public ImageAdapter imageAdapter;
-    public static Context context_main;
+    public  static Context context_main;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         imageAdapter = new ImageAdapter(this);
-        for (int i = 1; i<22; ++i){
+        for (int i = 1; i<22; i++){
             String tmpSign = "pic_" + i;
             Bitmap bitmap = BitmapFactory.decodeResource(this.getApplicationContext().getResources(), getResources().getIdentifier(tmpSign, "drawable", this.getPackageName()));
             this.imageAdapter.gridviewimages.add(bitmap);

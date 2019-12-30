@@ -26,6 +26,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.example.gallerymaker.FullImageActivity;
+import com.example.gallerymaker.ImageAdapter;
 import com.example.gallerymaker.MainActivity;
 import com.example.gallerymaker.R;
 import com.gun0912.tedpermission.PermissionListener;
@@ -45,6 +46,7 @@ public class GalleryFragment extends Fragment {
     private File tempFile;
     private GridView gridView;
     private View gridviewitem;
+    public static ImageAdapter imageAdapterinfrag;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -56,9 +58,9 @@ public class GalleryFragment extends Fragment {
 
 
 
-
+        imageAdapterinfrag = ((MainActivity)getActivity()).imageAdapter;
         // Instance of ImageAdapter Class
-        gridView.setAdapter(((MainActivity)getActivity()).imageAdapter);
+        gridView.setAdapter(imageAdapterinfrag);
 
 
         view.findViewById(R.id.gallerybtn).setOnClickListener(new View.OnClickListener() {
@@ -233,6 +235,7 @@ public class GalleryFragment extends Fragment {
         }catch (IOException e){
             e.printStackTrace();
         }
+        assert exif != null;
         int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
 
         Bitmap bmRotated = rotateBitmap(originalBm, orientation);

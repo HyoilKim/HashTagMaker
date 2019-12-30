@@ -59,30 +59,33 @@ public class GalleryFragment extends Fragment {
         gridviewitem = inflater.inflate(R.layout.gridview_item, container, false);
         gridView = (GridView) view.findViewById(R.id.grid_view);
         imageAdapter = new ImageAdapter(getActivity());
-
-        imageAdapter.pictures.add(R.drawable.pic_1);
-        imageAdapter.pictures.add(R.drawable.pic_2);
-        imageAdapter.pictures.add(R.drawable.pic_3);
-        imageAdapter.pictures.add(R.drawable.pic_4);
-        imageAdapter.pictures.add(R.drawable.pic_5);
-        imageAdapter.pictures.add(R.drawable.pic_6);
-        imageAdapter.pictures.add(R.drawable.pic_7);
-        imageAdapter.pictures.add(R.drawable.pic_8);
-        imageAdapter.pictures.add(R.drawable.pic_9);
-        imageAdapter.pictures.add(R.drawable.pic_10);
-        imageAdapter.pictures.add(R.drawable.pic_11);
-        imageAdapter.pictures.add(R.drawable.pic_12);
-        imageAdapter.pictures.add(R.drawable.pic_13);
-        imageAdapter.pictures.add(R.drawable.pic_14);
-        imageAdapter.pictures.add(R.drawable.pic_15);
-        imageAdapter.pictures.add(R.drawable.pic_16);
-        imageAdapter.pictures.add(R.drawable.pic_17);
-        imageAdapter.pictures.add(R.drawable.pic_18);
-        imageAdapter.pictures.add(R.drawable.pic_19);
-        imageAdapter.pictures.add(R.drawable.pic_20);
-        imageAdapter.pictures.add(R.drawable.pic_21);
-
-
+//
+//        imageAdapter.pictures.add(R.drawable.pic_1);
+//        imageAdapter.pictures.add(R.drawable.pic_2);
+//        imageAdapter.pictures.add(R.drawable.pic_3);
+//        imageAdapter.pictures.add(R.drawable.pic_4);
+//        imageAdapter.pictures.add(R.drawable.pic_5);
+//        imageAdapter.pictures.add(R.drawable.pic_6);
+//        imageAdapter.pictures.add(R.drawable.pic_7);
+//        imageAdapter.pictures.add(R.drawable.pic_8);
+//        imageAdapter.pictures.add(R.drawable.pic_9);
+//        imageAdapter.pictures.add(R.drawable.pic_10);
+//        imageAdapter.pictures.add(R.drawable.pic_11);
+//        imageAdapter.pictures.add(R.drawable.pic_12);
+//        imageAdapter.pictures.add(R.drawable.pic_13);
+//        imageAdapter.pictures.add(R.drawable.pic_14);
+//        imageAdapter.pictures.add(R.drawable.pic_15);
+//        imageAdapter.pictures.add(R.drawable.pic_16);
+//        imageAdapter.pictures.add(R.drawable.pic_17);
+//        imageAdapter.pictures.add(R.drawable.pic_18);
+//        imageAdapter.pictures.add(R.drawable.pic_19);
+//        imageAdapter.pictures.add(R.drawable.pic_20);
+//        imageAdapter.pictures.add(R.drawable.pic_21);
+        for (int i = 1; i<22; ++i){
+            String tmpSign = "pic_" + i;
+            Bitmap bitmap = BitmapFactory.decodeResource(getActivity().getApplicationContext().getResources(), getResources().getIdentifier(tmpSign, "drawable", getActivity().getPackageName()));
+            imageAdapter.gridviewimages.add(bitmap);
+        }
 
         // Instance of ImageAdapter Class
         gridView.setAdapter(imageAdapter);
@@ -304,8 +307,8 @@ public class GalleryFragment extends Fragment {
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setLayoutParams(new GridView.LayoutParams(320, 230));
 
-        views.add(imageView);
-        gridView.setAdapter(new GridviewAdapter(getActivity()));
+        imageAdapter.gridviewimages.add(bmRotated);
+        gridView.setAdapter(imageAdapter);
         /**
          *  tempFile 사용 후 null 처리를 해줘야 합니다.
          *  (resultCode != RESULT_OK) 일 때 tempFile 을 삭제하기 때문에

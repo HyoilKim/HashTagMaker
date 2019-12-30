@@ -2,6 +2,7 @@ package com.example.gallerymaker;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -14,6 +15,7 @@ public class ImageAdapter extends BaseAdapter {
 
     private Context mContext;
     public ArrayList<Integer> pictures = new ArrayList<>();
+    public ArrayList<Bitmap> gridviewimages = new ArrayList<>();
     // Keep all Images in array
 //    public Integer[] mThumbIds = {
 //            R.drawable.pic_1, R.drawable.pic_2,
@@ -35,12 +37,12 @@ public class ImageAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return pictures.size();
+        return gridviewimages.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return pictures.get(position);
+        return gridviewimages.get(position);
     }
 
     @Override
@@ -53,8 +55,12 @@ public class ImageAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ImageView imageView = new ImageView(mContext);
-
-        imageView.setImageResource(pictures.get(position));
+//
+//        imageView.setImageResource(pictures.get(position));
+        Bitmap bitmap;
+        bitmap = gridviewimages.get(position);
+//        ImageView imageView = gridviewimages.get(position);
+        imageView.setImageBitmap(bitmap);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         imageView.setLayoutParams(new GridView.LayoutParams(320, 230));

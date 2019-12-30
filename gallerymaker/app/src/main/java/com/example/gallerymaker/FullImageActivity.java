@@ -30,7 +30,8 @@ public class FullImageActivity extends AppCompatActivity {
         ImageView imageView = (ImageView) findViewById(R.id.full_image_view);
         mAttacher = new PhotoViewAttacher(imageView);
         Log.d( "", ""+ GalleryFragment.imageAdapter.getCount());
-        imageView.setImageResource(GalleryFragment.imageAdapter.pictures.get(position));
+//        imageView.setImageResource(GalleryFragment.imageAdapter.pictures.get(position));
+        imageView.setImageBitmap(GalleryFragment.imageAdapter.gridviewimages.get(position));
         imageView.bringToFront();
     }
 

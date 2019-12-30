@@ -2,6 +2,8 @@ package com.example.gallerymaker.ui.gallery;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -14,6 +16,9 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -22,6 +27,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
@@ -49,10 +55,11 @@ public class GalleryFragment extends Fragment {
     public static ImageAdapter imageAdapterinfrag;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.grid_layout, container, false);
+        view = inflater.inflate(R.layout.grid_layout, container, false);
         gridviewitem = inflater.inflate(R.layout.gridview_item, container, false);
         gridView = (GridView) view.findViewById(R.id.grid_view);
 
@@ -63,23 +70,49 @@ public class GalleryFragment extends Fragment {
         gridView.setAdapter(imageAdapterinfrag);
 
 
-        view.findViewById(R.id.gallerybtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
-                if(isPermission) goToAlbum();
-                else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
-            }
-        });
 
-        view.findViewById(R.id.camerbtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
-                if(isPermission)  takePhoto();
-                else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
-            }
-        });
+//        final CharSequence[] galorcam = {"갤러리", "카메라"};
+//
+//        view.findViewById(R.id.addimage).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                AlertDialog.Builder oDialog = new AlertDialog.Builder(getContext(), android.R.style.Theme_DeviceDefault_Light_Dialog_Alert);
+//                oDialog.setTitle("사진 가져오기")
+//                        .setItems(galorcam, new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                String selectedText = galorcam[which].toString();
+//                                if(selectedText == "갤러리"){
+//                                    if(isPermission) goToAlbum();
+//                                    else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+//                                }
+//                                else{
+//                                    if(isPermission)  takePhoto();
+//                                    else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+//                                }
+//                            }
+//                        })
+//                        .show();
+//            }
+//        });
+//
+//        view.findViewById(R.id.gallerybtn).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
+//                if(isPermission) goToAlbum();
+//                else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+//            }
+//        });
+//
+//        view.findViewById(R.id.camerbtn).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
+//                if(isPermission)  takePhoto();
+//                else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+//            }
+//        });
         /**
          * On Click event for Single Gridview Item
          * */
@@ -96,6 +129,35 @@ public class GalleryFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+        inflater.inflate(R.menu.gallerymenubar, menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item){
+        switch (item.getItemId()){
+            case R.id.addpic:
+                final CharSequence[] galorcam = {"갤러리", "카메라"};
+                AlertDialog.Builder oDialog = new AlertDialog.Builder(getContext(), android.R.style.Theme_DeviceDefault_Light_Dialog_Alert);
+                oDialog.setTitle("사진 가져오기")
+                        .setItems(galorcam, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String selectedText = galorcam[which].toString();
+                                if(selectedText == "갤러리"){
+                                    if(isPermission) goToAlbum();
+                                    else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+                                }
+                                else{
+                                    if(isPermission)  takePhoto();
+                                    else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        })
+                        .show();
+        }
+        return true;
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

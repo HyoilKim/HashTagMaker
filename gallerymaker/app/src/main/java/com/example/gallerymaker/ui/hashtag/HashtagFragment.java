@@ -28,17 +28,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-
 import com.example.gallerymaker.Classifier;
 import com.example.gallerymaker.R;
 import com.example.gallerymaker.Result;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
-
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;

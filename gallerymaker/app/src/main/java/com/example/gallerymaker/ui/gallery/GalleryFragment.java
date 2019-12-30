@@ -2,7 +2,6 @@ package com.example.gallerymaker.ui.gallery;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -19,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -28,7 +26,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.example.gallerymaker.FullImageActivity;
-import com.example.gallerymaker.ImageAdapter;
+import com.example.gallerymaker.MainActivity;
 import com.example.gallerymaker.R;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -38,9 +36,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
 public class GalleryFragment extends Fragment {
-    public static ImageAdapter imageAdapter;
     private static final String TAG = "몰입캠프";
     private Boolean isPermission = true;
     private View view;
@@ -49,7 +45,6 @@ public class GalleryFragment extends Fragment {
     private File tempFile;
     private GridView gridView;
     private View gridviewitem;
-    public ArrayList<ImageView> views = new ArrayList<ImageView>();
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -58,37 +53,12 @@ public class GalleryFragment extends Fragment {
         View view = inflater.inflate(R.layout.grid_layout, container, false);
         gridviewitem = inflater.inflate(R.layout.gridview_item, container, false);
         gridView = (GridView) view.findViewById(R.id.grid_view);
-        imageAdapter = new ImageAdapter(getActivity());
-//
-//        imageAdapter.pictures.add(R.drawable.pic_1);
-//        imageAdapter.pictures.add(R.drawable.pic_2);
-//        imageAdapter.pictures.add(R.drawable.pic_3);
-//        imageAdapter.pictures.add(R.drawable.pic_4);
-//        imageAdapter.pictures.add(R.drawable.pic_5);
-//        imageAdapter.pictures.add(R.drawable.pic_6);
-//        imageAdapter.pictures.add(R.drawable.pic_7);
-//        imageAdapter.pictures.add(R.drawable.pic_8);
-//        imageAdapter.pictures.add(R.drawable.pic_9);
-//        imageAdapter.pictures.add(R.drawable.pic_10);
-//        imageAdapter.pictures.add(R.drawable.pic_11);
-//        imageAdapter.pictures.add(R.drawable.pic_12);
-//        imageAdapter.pictures.add(R.drawable.pic_13);
-//        imageAdapter.pictures.add(R.drawable.pic_14);
-//        imageAdapter.pictures.add(R.drawable.pic_15);
-//        imageAdapter.pictures.add(R.drawable.pic_16);
-//        imageAdapter.pictures.add(R.drawable.pic_17);
-//        imageAdapter.pictures.add(R.drawable.pic_18);
-//        imageAdapter.pictures.add(R.drawable.pic_19);
-//        imageAdapter.pictures.add(R.drawable.pic_20);
-//        imageAdapter.pictures.add(R.drawable.pic_21);
-        for (int i = 1; i<22; ++i){
-            String tmpSign = "pic_" + i;
-            Bitmap bitmap = BitmapFactory.decodeResource(getActivity().getApplicationContext().getResources(), getResources().getIdentifier(tmpSign, "drawable", getActivity().getPackageName()));
-            imageAdapter.gridviewimages.add(bitmap);
-        }
+
+
+
 
         // Instance of ImageAdapter Class
-        gridView.setAdapter(imageAdapter);
+        gridView.setAdapter(((MainActivity)getActivity()).imageAdapter);
 
 
         view.findViewById(R.id.gallerybtn).setOnClickListener(new View.OnClickListener() {
@@ -247,43 +217,7 @@ public class GalleryFragment extends Fragment {
 
         return image;
     }
-    public class GridviewAdapter extends BaseAdapter {
 
-        private Context mContext;
-
-
-        // Constructor
-        public GridviewAdapter(Context c){
-            mContext = c;
-        }
-
-        @Override
-        public int getCount() {
-            return views.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return views.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            ImageView imageView = views.get(position);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
-            imageView.setLayoutParams(new GridView.LayoutParams(320, 230));
-            return imageView;
-        }
-
-    }
     /**
      *  tempFile 을 bitmap 으로 변환 후 ImageView 에 설정한다.
      */
@@ -307,8 +241,8 @@ public class GalleryFragment extends Fragment {
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setLayoutParams(new GridView.LayoutParams(320, 230));
 
-        imageAdapter.gridviewimages.add(bmRotated);
-        gridView.setAdapter(imageAdapter);
+        ((MainActivity)getActivity()).imageAdapter.gridviewimages.add(bmRotated);
+        gridView.setAdapter(((MainActivity)getActivity()).imageAdapter);
         /**
          *  tempFile 사용 후 null 처리를 해줘야 합니다.
          *  (resultCode != RESULT_OK) 일 때 tempFile 을 삭제하기 때문에

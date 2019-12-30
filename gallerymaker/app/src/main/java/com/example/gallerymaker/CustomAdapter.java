@@ -1,6 +1,6 @@
 package com.example.gallerymaker;
 
-import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,25 +8,25 @@ import android.widget.ImageView;
 
 import androidx.viewpager.widget.PagerAdapter;
 
-import java.util.ArrayList;
+import com.example.gallerymaker.ui.gallery.GalleryFragment;
+
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class CustomAdapter extends PagerAdapter {
     LayoutInflater inflater;
-    ArrayList<Bitmap> items;
-    public CustomAdapter(LayoutInflater inflater, ArrayList<Bitmap> gridviewitems) {
+    PhotoViewAttacher mAttacher;
+    public CustomAdapter(LayoutInflater inflater) {
 
         // TODO Auto-generated constructor stub
         //전달 받은 LayoutInflater를 멤버변수로 전달
         this.inflater=inflater;
-        this.items = gridviewitems;
     }
 
     //PagerAdapter가 가지고 잇는 View의 개수를 리턴
     //보통 보여줘야하는 이미지 배열 데이터의 길이를 리턴
     @Override
     public int getCount() {
-        int n  = items.size();
-        return n; //이미지 개수 리턴
+        return GalleryFragment.imageAdapterinfrag.getCount(); //이미지 개수 리턴
     }
 
     //ViewPager가 현재 보여질 Item(View객체)를 생성할 필요가 있는 때 자동으로 호출
@@ -46,11 +46,11 @@ public class CustomAdapter extends PagerAdapter {
         //만들어진 View안에 있는 ImageView 객체 참조
         //위에서 inflated 되어 만들어진 view로부터 findViewById()를 해야 하는 것에 주의.
         ImageView img= (ImageView)view.findViewById(R.id.img_viewpager_childimage);
-
+        Log.d("", ""+GalleryFragment.imageAdapterinfrag.getCount());
         //ImageView에 현재 position 번째에 해당하는 이미지를 보여주기 위한 작업
         //현재 position에 해당하는 이미지를 setting
-        img.setImageBitmap(items.get(position));
-
+        img.setImageBitmap(GalleryFragment.imageAdapterinfrag.gridviewimages.get(position));
+        mAttacher = new PhotoViewAttacher(img);
         //ViewPager에 만들어 낸 View 추가
         container.addView(view);
 

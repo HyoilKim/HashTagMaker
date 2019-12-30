@@ -4,15 +4,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ImageView android:id="@+id/full_image_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-
-<!--    <androidx.viewpager.widget.ViewPager-->
-<!--        android:id = "@+id/pager"-->
+<!--    <ImageView android:id="@+id/full_image_view"-->
 <!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent">-->
+<!--        android:layout_height="match_parent"/>-->
 
-<!--    </androidx.viewpager.widget.ViewPager>-->
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </androidx.viewpager.widget.ViewPager>
 </LinearLayout>

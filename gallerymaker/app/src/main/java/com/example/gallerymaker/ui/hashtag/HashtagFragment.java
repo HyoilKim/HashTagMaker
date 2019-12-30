@@ -2,7 +2,12 @@ package com.example.gallerymaker.ui.hashtag;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -43,6 +48,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 public class HashtagFragment extends Fragment {
@@ -82,21 +88,60 @@ public class HashtagFragment extends Fragment {
         tedPermission();
 
         view = inflater.inflate(R.layout.activity_get_image, container, false);
-        view.findViewById(R.id.btnGallery).setOnClickListener(new View.OnClickListener() {
+
+        view.findViewById(R.id.btnCopyTags).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View vview) {
                 // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
-                if(isPermission) goToAlbum();
-                else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("hashtags", answer);
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(view.getContext(),"클립보드에 복사되었습니다", Toast.LENGTH_LONG).show();
             }
         });
+
+        view.findViewById(R.id.btnCallInstagram).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View vview) {
+                // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
+                if(getPackageList()) {
+                    Intent intent = getActivity().getPackageManager().getLaunchIntentForPackage("com.instagram.android");
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+                else {
+                    String url = "https://play.google.com/store/apps/details?id=com.instagram.android&hl=en_US&referrer=utm_source%3Dgoogle%26utm_medium%3Dorganic%26utm_term%3Dinstagram&pcampaignid=APPU_1_2vQJXu-kCtKbmAXR6oXwAg";
+                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(i);
+                }
+            }
+        });
+
+        view.findViewById(R.id.btnGallery).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View vview) {
+                // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
+                if(isPermission) {
+                    goToAlbum();
+                }
+                else {
+                    Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+
 
         view.findViewById(R.id.btnCamera).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
-                if(isPermission)  takePhoto();
-                else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+                if(isPermission)  {
+                    takePhoto();
+                }
+                else {
+                    Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -159,6 +204,28 @@ public class HashtagFragment extends Fragment {
             setImage();
 
         }
+    }
+    public boolean getPackageList() {
+        boolean isExist = false;
+
+        PackageManager pkgMgr = getActivity().getPackageManager();
+        List<ResolveInfo> mApps;
+        Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        mApps = pkgMgr.queryIntentActivities(mainIntent, 0);
+
+        try {
+            for (int i = 0; i < mApps.size(); i++) {
+                if(mApps.get(i).activityInfo.packageName.startsWith("com.instagram.android")){
+                    isExist = true;
+                    break;
+                }
+            }
+        }
+        catch (Exception e) {
+            isExist = false;
+        }
+        return isExist;
     }
 
     /**
@@ -291,7 +358,8 @@ public class HashtagFragment extends Fragment {
         answer = result.getHashtags();
         Log.d("", ""+answer);
         textview.setText(answer);
-
+        view.findViewById(R.id.btnCopyTags).setVisibility(View.VISIBLE);
+        view.findViewById(R.id.btnCallInstagram).setVisibility(View.VISIBLE);
 
 
         /**

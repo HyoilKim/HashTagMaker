@@ -52,15 +52,16 @@ public class EditItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_item);
 
-        final Intent intent = getIntent();
         this.name = (EditText) findViewById(R.id.edit_name);
         this.phoneNumber = (EditText) findViewById(R.id.edit_phoneNumber);
         this.img = (ImageView) findViewById(R.id.edit_img);
         this.memo = (EditText) findViewById(R.id.edit_memo);
 
+        final Intent intent = getIntent();
         this.tmpImgIdx = this.imgIdx = intent.getIntExtra("img", 0);
         img.setImageResource( profile_image_lIst.getImg (imgIdx) );
 
+        // 수정 전 정보 저장(tmp...)
         this.tmpName = intent.getStringExtra("name");
         this.tmpPhoneNumber = intent.getStringExtra("phone_number");
         this.tmpMemo = intent.getStringExtra("memo");
@@ -110,7 +111,12 @@ public class EditItemActivity extends AppCompatActivity {
                     bw.write(deletedJsonArray.toString());
                     bw.close();
 
-                    //activity 2개 닫기
+                    for (int i = 0; i < BaseActivity.actList.size(); i++) {
+                        BaseActivity.actList.get(i).finish();
+                        BaseActivity.actList.remove(i);
+                    }
+                    Intent intent1 = new Intent(EditItemActivity.this, MainActivity.class);
+                    startActivity(intent1);
                     finish();
 
                 } catch (JSONException e) {
@@ -124,7 +130,6 @@ public class EditItemActivity extends AppCompatActivity {
         });
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.ok_bar, menu);
@@ -136,8 +141,21 @@ public class EditItemActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch ( item.getItemId() ) {
             case R.id.ok_bar:
-                Log.d("ok button", "at edit view");
+                Log.d("complete edit button", "at edit view");
                 // item detail에 전송
+                // 수정된 정보
+                String newPhoneNumber = phoneNumber.getText().toString();
+                String newName = name.getText().toString();
+                String newMemo = memo.getText().toString();
+                int newimg = imgIdx;
+
+                Intent intent = new Intent(EditItemActivity.this, itemDetail.class);
+                intent.putExtra("name", newName);
+                intent.putExtra("phone_number", newPhoneNumber);
+                intent.putExtra("memo", newMemo);
+                intent.putExtra("img", imgIdx);
+                setResult(EDIT, intent);
+
                 // json 수정
                 try {
                     String json = "";
@@ -153,11 +171,6 @@ public class EditItemActivity extends AppCompatActivity {
                     for (int i = 0; i < jsonArray.length(); i++) jsonList.add((JSONObject) jsonArray.get(i));
 
                     // 수정 전의 item정보와 json의 정보가 같으면 object수정
-                    String newPhoneNumber = phoneNumber.getText().toString();
-                    String newName = name.getText().toString();
-                    String newMemo = memo.getText().toString();
-                    int newimg = imgIdx;
-
                     for (int i = 0; i < jsonList.size(); i++) {
                         JSONObject obj = jsonList.get(i);
                         if( tmpPhoneNumber.equals(obj.getString("phone_number")) &&

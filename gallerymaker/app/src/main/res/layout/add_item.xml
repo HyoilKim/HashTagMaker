@@ -23,7 +23,8 @@
         android:hint="name"
         android:textColor="#666666"
         android:textSize="18sp"
-        android:layout_margin="20dp"/>
+        android:layout_margin="20dp"
+        android:maxLength="9"/>
 
     <EditText
         android:id="@+id/add_phoneNumber"
@@ -34,7 +35,8 @@
         android:hint="phoneNumber"
         android:textColor="#666666"
         android:textSize="18sp"
-        android:layout_margin="20dp"/>
+        android:layout_margin="20dp"
+        android:maxLength="13"/>
 
     <EditText
         android:id="@+id/add_memo"
@@ -45,5 +47,6 @@
         android:hint="memo"
         android:textColor="#666666"
         android:textSize="18sp"
-        android:layout_margin="20dp"/>
+        android:layout_margin="20dp"
+        android:maxLength="30"/>
 </RelativeLayout>

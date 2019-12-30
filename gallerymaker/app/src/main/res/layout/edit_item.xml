@@ -21,6 +21,7 @@
         android:layout_below="@+id/edit_img"
         android:layout_weight="1"
         android:hint="name"
+        android:maxLength="9"
         android:textColor="#666666"
         android:textSize="18sp"
         android:layout_margin="20dp"/>
@@ -32,6 +33,7 @@
         android:layout_below="@+id/edit_name"
         android:layout_weight="1"
         android:hint="phone number"
+        android:maxLength="13"
         android:textColor="#666666"
         android:textSize="18sp"
         android:layout_margin="20dp"/>
@@ -43,6 +45,7 @@
         android:layout_below="@+id/edit_phoneNumber"
         android:layout_weight="1"
         android:hint="memo"
+        android:maxLength="30"
         android:textColor="#666666"
         android:textSize="18sp"
         android:layout_margin="20dp"/>
@@ -53,7 +56,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/edit_memo"
         android:layout_centerHorizontal="true"
-        android:gravity="center"
         android:text="Delete"
         android:layout_margin="15dp"/>
 

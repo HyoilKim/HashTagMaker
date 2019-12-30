@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,9 +31,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class itemDetail extends AppCompatActivity {
+public class itemDetail extends AppCompatActivity{
     private ListView_ImageList profile_image_lIst = new ListView_ImageList();
-    public static final int UPDATE_ITEM = 2;
     public static final int EDIT = 1;
     private TextView name;
     private TextView phone_number;
@@ -42,6 +43,7 @@ public class itemDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_detailview);
+        BaseActivity.actList.add(itemDetail.this);
 
         // item의 정보를 가져와 detail 화면으로 보여주기
         Intent intent = getIntent();
@@ -76,7 +78,8 @@ public class itemDetail extends AppCompatActivity {
                 intent.putExtra("img", this.imgIdx);
                 intent.putExtra("memo", this.memo.getText().toString());
                 intent.putExtra("isBlock", intent.getStringExtra("isBlock"));
-                startActivityForResult(intent, UPDATE_ITEM);
+                startActivityForResult(intent, EDIT);
+
                 return true;
             default: return false;
         }
@@ -86,12 +89,15 @@ public class itemDetail extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d("itemdetail", "callback" + resultCode);
-        if(resultCode == EDIT) {
-            imgIdx = data.getIntExtra("img", 0);
-            img.setImageResource(profile_image_lIst.getImg(imgIdx));
-            name.setText(data.getStringExtra("name"));
-            phone_number.setText(data.getStringExtra("phone_number"));
-            memo.setText(getMemo(getJson(), data.getStringExtra("memo")));
+        switch ( resultCode ) {
+            case EDIT:
+                imgIdx = data.getIntExtra("img", 0);
+                img.setImageResource(profile_image_lIst.getImg(imgIdx));
+                name.setText(data.getStringExtra("name"));
+                phone_number.setText(data.getStringExtra("phone_number"));
+                memo.setText(data.getStringExtra("memo"));
+                break;
+                default: break;
         }
     }
 
@@ -130,6 +136,6 @@ public class itemDetail extends AppCompatActivity {
         }catch (JSONException e) {
             e.printStackTrace();
         }
-        return "empty";
+        return "blank";
     }
 }

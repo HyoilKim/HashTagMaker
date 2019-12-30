@@ -4,10 +4,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<<<<<<< HEAD
-=======
 <!--    android:paddingTop="?attr/actionBarSize">-->
->>>>>>> d1a556eb8e7e1b63e81f4526067629a0cc255e26
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"

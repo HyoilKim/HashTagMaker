@@ -3,12 +3,8 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="@style/Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-<<<<<<< HEAD
-        <item name="colorPrimary">#00BFFF</item>
-=======
         <item name="android:windowIsTranslucent">false</item>
         <item name="colorPrimary">@color/colorPrimary</item>
->>>>>>> d1a556eb8e7e1b63e81f4526067629a0cc255e26
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>

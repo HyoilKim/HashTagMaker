@@ -25,8 +25,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
@@ -37,7 +37,6 @@ import com.example.gallerymaker.R;
 import com.example.gallerymaker.Result;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
-
 
 import java.io.File;
 import java.io.IOException;
@@ -249,7 +248,7 @@ public class HashtagFragment extends Fragment {
         Log.d(TAG, "setImage : " + tempFile.getAbsolutePath());
         int viewHeight = 500;
         int viewWidth = 500;
-        int sendsize = 224;
+        int sendsize = 300;
         float width = bmRotated.getWidth();
         float height = bmRotated.getHeight();
         Bitmap bmResized1;
@@ -287,8 +286,8 @@ public class HashtagFragment extends Fragment {
         }
 
 
-        TextView textview = view.findViewById(R.id.textView);
-        result = mClassifier.classify(bmResized2);
+        EditText textview = view.findViewById(R.id.textView);
+        result = mClassifier.classify(bmResized2, getActivity());
         answer = result.getHashtags();
         Log.d("", ""+answer);
         textview.setText(answer);

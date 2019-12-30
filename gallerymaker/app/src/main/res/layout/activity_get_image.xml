@@ -44,6 +44,8 @@
             android:text="카메라"
             android:textColor="#050505"
             app:backgroundTint="#E7E6E6" />
+
+
     </LinearLayout>
 
     <androidx.constraintlayout.widget.Group
@@ -51,14 +53,48 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <TextView
+    <EditText
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:maxWidth="250dp"
+        android:background="@drawable/editview_taeduri"
+        android:cursorVisible="true"
+        android:inputType="textMultiLine|textNoSuggestions"
         android:text=""
         app:layout_constraintBottom_toTopOf="@+id/llBottomNav"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView123" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnCopyTags"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:clickable="true"
+        android:visibility="invisible"
+        app:backgroundTint="#0003A9F4"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="285dp"
+        android:layout_marginRight ="25dp"
+        app:maxImageSize="20dp"
+        app:srcCompat="?attr/actionModeCopyDrawable" />
+
+    <Button
+        android:id="@+id/btnCallInstagram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="480dp"
+        android:layout_marginBottom="43dp"
+        android:text="Button"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/llBottomNav"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

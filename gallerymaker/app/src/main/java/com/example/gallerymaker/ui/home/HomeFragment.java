@@ -1,9 +1,6 @@
 package com.example.gallerymaker.ui.home;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,22 +9,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.fragment.app.ListFragment;
 
 import com.example.gallerymaker.ListViewAdapter;
 import com.example.gallerymaker.ListViewItem;
-import com.example.gallerymaker.MainActivity;
 import com.example.gallerymaker.R;
 import com.example.gallerymaker.add_item;
 import com.example.gallerymaker.itemDetail;
@@ -37,15 +27,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FilePermission;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class HomeFragment extends ListFragment {
     private String memo;
@@ -136,7 +120,7 @@ public class HomeFragment extends ListFragment {
         String json = "";
         int data = -1;
         try {
-              // read assets file
+            // read assets file
 //            InputStream is = getResources().getAssets().open("phone_Book.txt");
 //            int fileSize = is.available();
 //

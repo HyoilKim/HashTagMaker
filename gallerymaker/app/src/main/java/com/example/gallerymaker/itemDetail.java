@@ -97,7 +97,7 @@ public class itemDetail extends AppCompatActivity{
                 phone_number.setText(data.getStringExtra("phone_number"));
                 memo.setText(data.getStringExtra("memo"));
                 break;
-                default: break;
+            default: break;
         }
     }
 

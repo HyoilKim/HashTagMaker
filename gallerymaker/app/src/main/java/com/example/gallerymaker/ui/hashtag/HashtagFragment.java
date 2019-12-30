@@ -28,17 +28,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-
 import com.example.gallerymaker.Classifier;
 import com.example.gallerymaker.R;
 import com.example.gallerymaker.Result;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
-
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -47,9 +43,9 @@ import java.util.Date;
 
 
 public class HashtagFragment extends Fragment {
-    private static final String TAG = "blackjin";
+    private static final String TAG = "몰입캠프";
     private Boolean isPermission = true;
-    public View view;
+    private View view;
     private static final int PICK_FROM_ALBUM = 1;
     private static final int PICK_FROM_CAMERA = 2;
     private File tempFile;

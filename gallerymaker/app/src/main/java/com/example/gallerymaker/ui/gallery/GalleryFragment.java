@@ -59,9 +59,6 @@ public class GalleryFragment extends Fragment {
         setHasOptionsMenu(true);
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getActivity().findViewById(R.id.editTextFilter).setVisibility(View.GONE);
-        getActivity().findViewById(R.id.searchIcon).setVisibility(View.GONE);
-
         view = inflater.inflate(R.layout.grid_layout, container, false);
         gridviewitem = inflater.inflate(R.layout.gridview_item, container, false);
         gridView = (GridView) view.findViewById(R.id.grid_view);

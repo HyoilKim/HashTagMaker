@@ -1,12 +1,7 @@
 package com.example.gallerymaker.ui.home;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,24 +10,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.fragment.app.ListFragment;
 
 import com.example.gallerymaker.ListViewAdapter;
 import com.example.gallerymaker.ListViewItem;
-import com.example.gallerymaker.MainActivity;
 import com.example.gallerymaker.R;
 import com.example.gallerymaker.add_item;
 import com.example.gallerymaker.itemDetail;
@@ -42,16 +28,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FilePermission;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 
 public class HomeFragment extends ListFragment {
     private String memo;
@@ -72,8 +51,6 @@ public class HomeFragment extends ListFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // show listView from json
         Log.d("on CreateView","start");
-        getActivity().findViewById(R.id.editTextFilter).setVisibility(View.VISIBLE);
-        getActivity().findViewById(R.id.searchIcon).setVisibility(View.VISIBLE);
 
         jsonParsing(getJson());
         View v = inflater.inflate(R.layout.fragment_home, container, false);
@@ -85,29 +62,29 @@ public class HomeFragment extends ListFragment {
         }
 
         jsonParsing(getJson());
-
-        EditText editTextFilter = (EditText) getActivity().findViewById(R.id.editTextFilter);
-        Log.d("editTextFilter", editTextFilter.getText().toString() + "//////////////");
-        editTextFilter.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String filterText = s.toString() ;
-                Log.d("after filtering", s.toString());
-                if (filterText.length() > 0) {
-                    listview.setFilterText(filterText) ;
-                } else {
-                    listview.clearTextFilter() ;
-                }
-            }
-        });
+//
+//        EditText editTextFilter = (EditText) getActivity().findViewById(R.id.editTextFilter);
+//        Log.d("editTextFilter", editTextFilter.getText().toString() + "//////////////");
+//        editTextFilter.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                String filterText = s.toString() ;
+//                Log.d("after filtering", s.toString());
+//                if (filterText.length() > 0) {
+//                    listview.setFilterText(filterText) ;
+//                } else {
+//                    listview.clearTextFilter() ;
+//                }
+//            }
+//        });
 //        return inflater.inflate(R.layout.fragment_home, container, false);
         return super.onCreateView(inflater, container, savedInstanceState);
 

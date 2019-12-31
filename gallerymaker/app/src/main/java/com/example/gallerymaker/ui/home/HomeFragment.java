@@ -110,6 +110,16 @@ public class HomeFragment extends ListFragment {
         });
 //        return inflater.inflate(R.layout.fragment_home, container, false);
         return super.onCreateView(inflater, container, savedInstanceState);
+
+//        Log.d("on CreateView","start");
+//        return inflater.inflate(R.layout.fragment_home, container, false);
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull android.view.View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        jsonParsing(getJson());
     }
 
     // bar 추가

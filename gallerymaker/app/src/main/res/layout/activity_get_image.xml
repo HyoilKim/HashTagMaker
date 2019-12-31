@@ -5,45 +5,66 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/imageView123"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!--    <ImageView-->
+    <!--        android:id="@+id/imageView123"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:layout_constraintBottom_toTopOf="@+id/textView"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-    <LinearLayout
-        android:id="@+id/llBottomNav"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_marginBottom="80dp"
-        android:background="#949090"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent">
+    <!--    <LinearLayout-->
+    <!--        android:id="@+id/llBottomNav"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="80dp"-->
+    <!--        android:background="#949090"-->
+    <!--        android:gravity="center"-->
+    <!--        android:orientation="horizontal"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.0"-->
+    <!--        app:layout_constraintStart_toStartOf="parent">-->
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnGallery"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="40dp"
-            android:text="갤러리"
-            android:textColor="#050505"
-            app:backgroundTint="#E7E6E6" />
+<!--<<<<<<< HEAD-->
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/btnGallery"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginRight="40dp"-->
+<!--            android:text="갤러리"-->
+<!--            android:textColor="#050505"-->
+<!--            app:backgroundTint="#E7E6E6" />-->
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCamera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="카메라"
-            android:textColor="#050505"
-            app:backgroundTint="#E7E6E6" />
-    </LinearLayout>
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/btnCamera"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="카메라"-->
+<!--            android:textColor="#050505"-->
+<!--            app:backgroundTint="#E7E6E6" />-->
+<!--    </LinearLayout>-->
+<!--=======-->
+
+    <!--        <com.google.android.material.button.MaterialButton-->
+    <!--            android:id="@+id/btnGallery"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginRight="40dp"-->
+    <!--            android:text="갤러리"-->
+    <!--            android:textColor="#050505"-->
+    <!--            app:backgroundTint="#E7E6E6" />-->
+
+    <!--        <com.google.android.material.button.MaterialButton-->
+    <!--            android:id="@+id/btnCamera"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="카메라"-->
+    <!--            android:textColor="#050505"-->
+    <!--            app:backgroundTint="#E7E6E6" />-->
+
+
+    <!--    </LinearLayout>-->
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/group"
@@ -54,10 +75,84 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:background="@drawable/editview_taeduri"
+        android:cursorVisible="true"
+        android:inputType="textMultiLine|textNoSuggestions"
+        android:maxWidth="250dp"
         android:text=""
-        app:layout_constraintBottom_toTopOf="@+id/llBottomNav"
+        android:textColor="#7A302929"
+        android:textColorLink="#000000"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView123" />
+        app:layout_constraintTop_toBottomOf="@+id/getimage" />
+
+    <!--    <ImageButton-->
+    <!--        android:id="@+id/btnCallInstagram"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginStart="2dp"-->
+    <!--        android:layout_marginTop="20dp"-->
+    <!--        android:layout_marginRight="20dp"-->
+    <!--        android:layout_marginBottom="2dp"-->
+    <!--        android:adjustViewBounds="true"-->
+    <!--        android:background="#00FFFFFF"-->
+    <!--        android:maxWidth="50dp"-->
+    <!--        android:maxHeight="50dp"-->
+    <!--        android:scaleType="fitCenter"-->
+    <!--        android:visibility="invisible"-->
+    <!--        app:layout_constraintBottom_toTopOf="@+id/imageView123"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toEndOf="@+id/imageView123"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        app:srcCompat="@drawable/insta" />-->
+
+    <ImageButton
+        android:id="@+id/btnCopyTags"
+        android:layout_width="36dp"
+        android:layout_height="35dp"
+        android:adjustViewBounds="true"
+        android:background="#00F7F1F1"
+        android:maxWidth="30dp"
+        android:maxHeight="30dp"
+        android:scaleType="fitCenter"
+        android:visibility="invisible"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="@id/textView"
+        app:layout_constraintLeft_toRightOf="@id/textView"
+        app:layout_constraintTop_toTopOf="@id/textView"
+        app:srcCompat="@drawable/ic_copy" />
+
+    <ImageButton
+        android:id="@+id/getimage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0.5"
+        android:background="#00FDFCFC"
+        android:foregroundTint="#80FFFFFF"
+        android:maxHeight="1000px"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_addimg" />
+
+    <TextView
+        android:id="@+id/plzgetpic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0.5"
+        android:text="사진을 가져와 주세요"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/getimage" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

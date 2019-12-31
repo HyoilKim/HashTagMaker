@@ -1,11 +1,14 @@
 package com.example.gallerymaker;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -46,11 +49,27 @@ public class EditItemActivity extends AppCompatActivity {
     private String tmpMemo;
     private String tmpPhoneNumber;
     private int tmpImgIdx;
+    private InputMethodManager imm;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.ok_bar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        imm.hideSoftInputFromWindow(findViewById(R.id.edit_name).getWindowToken(), 0);
+        imm.hideSoftInputFromWindow(findViewById(R.id.edit_phoneNumber).getWindowToken(), 0);
+        imm.hideSoftInputFromWindow(findViewById(R.id.edit_memo).getWindowToken(), 0);
+        return super.onTouchEvent(event);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_item);
+        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
         this.name = (EditText) findViewById(R.id.edit_name);
         this.phoneNumber = (EditText) findViewById(R.id.edit_phoneNumber);
@@ -128,12 +147,6 @@ public class EditItemActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.ok_bar, menu);
-        return true;
     }
 
     // edit 버튼 클릭시 화면 전환

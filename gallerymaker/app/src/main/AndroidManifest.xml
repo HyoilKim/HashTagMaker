@@ -15,22 +15,22 @@
         android:requestLegacyExternalStorage="true">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".itemDetail"></activity>
+        <activity android:name=".itemDetail" android:windowSoftInputMode="adjustPan"></activity>
+        <activity android:name=".add_item" android:windowSoftInputMode="adjustPan"></activity>
+        <activity android:name=".EditItemActivity" android:windowSoftInputMode="adjustPan"></activity>
         <activity android:name=".FullImageActivity"></activity>
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="gallerymaker.provider"
             android:exported="false"
             android:grantUriPermissions="true">
-
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
@@ -38,8 +38,6 @@
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 
 </manifest>

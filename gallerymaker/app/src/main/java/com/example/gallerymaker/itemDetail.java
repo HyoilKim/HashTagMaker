@@ -85,6 +85,7 @@ public class itemDetail extends AppCompatActivity{
         }
     }
 
+    // editView로 넘어가서 수정한 값을 detailView에 보여줌
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -97,8 +98,15 @@ public class itemDetail extends AppCompatActivity{
                 phone_number.setText(data.getStringExtra("phone_number"));
                 memo.setText(data.getStringExtra("memo"));
                 break;
-            default: break;
+                default: break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(itemDetail.this, MainActivity.class);
+        setResult(HomeFragment.UPDATE_ITEM, intent);
+        finish();
     }
 
     public String getJson() {

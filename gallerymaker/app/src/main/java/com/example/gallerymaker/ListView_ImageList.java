@@ -1,17 +1,31 @@
 package com.example.gallerymaker;
 
+import android.graphics.Bitmap;
+import android.util.Log;
+
 import java.util.ArrayList;
 
 public class ListView_ImageList {
-    private ArrayList<Integer> profile_image_lIst = new ArrayList<>();
+    private static ArrayList<Bitmap> profile_image_lIst = new ArrayList<>();
 
-    ListView_ImageList() {
-        profile_image_lIst.add(R.drawable.ic_android_black_24dp);
-        profile_image_lIst.add(R.drawable.ic_notifications_black_24dp);
-        profile_image_lIst.add(R.drawable.ic_home_black_24dp);
+    private ListView_ImageList(){
+        Log.d("created","~~~~~~~~");
+        Log.d("created","~~~~~~~~");
+        Log.d("created","~~~~~~~~");
     }
 
-    public int getImg(int i) { return this.profile_image_lIst.get(i); }
-    public void addImg(int img) { profile_image_lIst.add(img); }
-    public void setImg(int i, int img) { profile_image_lIst.set(i, img); }
+    public static ArrayList<Bitmap> getObject(){
+        return profile_image_lIst;
+    }
+
+    public static Bitmap getImg(int i) { return profile_image_lIst.get(i); }
+
+    public static void addImg(Bitmap imgBitmap) {
+        Log.d("in list", imgBitmap.toString());
+        profile_image_lIst.add(imgBitmap);
+    }
+    public static void setImg(int i, Bitmap imgBitmap) { profile_image_lIst.set(i, imgBitmap); }
+    public static int getCount (){
+        return profile_image_lIst.size();
+    }
 }

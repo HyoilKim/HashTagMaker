@@ -2,6 +2,8 @@ package com.example.gallerymaker;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -26,6 +28,8 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -35,20 +39,21 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class EditItemActivity extends AppCompatActivity {
     static final int EDIT = 1;
-    private ListView_ImageList profile_image_lIst = new ListView_ImageList();
+    private ListView_ImageList profile_image_lIst;
     private EditText name;
     private EditText phoneNumber;
     private EditText memo;
-    private ImageView img;
-    private int imgIdx;
+    private ImageView imgView;
+    private Bitmap imgBitmap;
 
     private String tmpName;
     private String tmpMemo;
     private String tmpPhoneNumber;
-    private int tmpImgIdx;
+    private Bitmap tmpImgBitmap;
     private InputMethodManager imm;
 
     @Override
@@ -73,12 +78,15 @@ public class EditItemActivity extends AppCompatActivity {
 
         this.name = (EditText) findViewById(R.id.edit_name);
         this.phoneNumber = (EditText) findViewById(R.id.edit_phoneNumber);
-        this.img = (ImageView) findViewById(R.id.edit_img);
+        this.imgView = (ImageView) findViewById(R.id.edit_img);
         this.memo = (EditText) findViewById(R.id.edit_memo);
 
         final Intent intent = getIntent();
-        this.tmpImgIdx = this.imgIdx = intent.getIntExtra("img", 0);
-        img.setImageResource( profile_image_lIst.getImg (imgIdx) );
+
+        // ByteArray -> Bitmap
+        byte[] arr = intent.getByteArrayExtra("img");
+        this.imgBitmap = this.tmpImgBitmap = BitmapFactory.decodeByteArray(arr, 0, arr.length);
+        this.imgView.setImageBitmap( BitmapFactory.decodeByteArray(arr, 0, arr.length) );
 
         // 수정 전 정보 저장(tmp...)
         this.tmpName = intent.getStringExtra("name");
@@ -134,6 +142,7 @@ public class EditItemActivity extends AppCompatActivity {
                         BaseActivity.actList.get(i).finish();
                         BaseActivity.actList.remove(i);
                     }
+                    // 삭제 안될 시 문제 발생 가능
                     Intent intent1 = new Intent(EditItemActivity.this, MainActivity.class);
                     startActivity(intent1);
                     finish();
@@ -149,7 +158,7 @@ public class EditItemActivity extends AppCompatActivity {
         });
     }
 
-    // edit 버튼 클릭시 화면 전환
+    // ok 버튼 클릭시 화면 전환
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch ( item.getItemId() ) {
@@ -160,15 +169,18 @@ public class EditItemActivity extends AppCompatActivity {
                 String newPhoneNumber = phoneNumber.getText().toString();
                 String newName = name.getText().toString();
                 String newMemo = memo.getText().toString();
-                int newimg = imgIdx;
 
                 Intent intent = new Intent(EditItemActivity.this, itemDetail.class);
                 intent.putExtra("name", newName);
                 intent.putExtra("phone_number", newPhoneNumber);
                 intent.putExtra("memo", newMemo);
-                intent.putExtra("img", imgIdx);
-                setResult(EDIT, intent);
 
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                this.imgBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+                intent.putExtra("img", byteArray);
+
+                setResult(EDIT, intent);
                 // json 수정
                 try {
                     String json = "";
@@ -178,7 +190,7 @@ public class EditItemActivity extends AppCompatActivity {
                         json += str + "\n";
                     }
 
-                    // array -> list
+                    // array -> list : data delete 용이
                     JSONArray jsonArray = new JSONArray(json);
                     ArrayList<JSONObject> jsonList = new ArrayList<>();
                     for (int i = 0; i < jsonArray.length(); i++) jsonList.add((JSONObject) jsonArray.get(i));
@@ -190,7 +202,7 @@ public class EditItemActivity extends AppCompatActivity {
                                 tmpName.equals(obj.getString("name")) && tmpMemo.equals(obj.getString("memo")) ) {
                             Log.d("same idx", i+"");
                             JSONObject tmpObj = new JSONObject();
-                            tmpObj.put("img", newimg);
+                            tmpObj.put("img", Arrays.toString(byteArray));
                             tmpObj.put("name", newName);
                             tmpObj.put("phone_number", newPhoneNumber);
                             tmpObj.put("memo", newMemo);

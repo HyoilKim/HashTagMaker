@@ -26,18 +26,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class itemDetail extends AppCompatActivity{
-    private ListView_ImageList profile_image_lIst = new ListView_ImageList();
+    private ListView_ImageList profile_image_lIst;
     public static final int EDIT = 1;
     private TextView name;
     private TextView phone_number;
-    private ImageView img;
-    private int imgIdx;
+    private Bitmap imgBitmap;
+    private ImageView imgView;
     private TextView memo;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,14 +50,16 @@ public class itemDetail extends AppCompatActivity{
         Intent intent = getIntent();
         this.name = (TextView)findViewById(R.id.detail_name);
         this.phone_number = (TextView)findViewById(R.id.detail_phoneNumber);
-        this.img = (ImageView) findViewById(R.id.detail_img);
+        this.imgView = (ImageView) findViewById(R.id.detail_img);
         this.memo = (TextView) findViewById(R.id.detail_memo);
 
-        this.imgIdx = intent.getIntExtra("img", 0);
         phone_number.setText( intent.getStringExtra ("phone_number") );
         name.setText( intent.getStringExtra ("name") );
-        img.setImageResource( profile_image_lIst.getImg ( imgIdx ) );
         memo.setText( getMemo ( getJson(), intent.getStringExtra ("phone_number") ) );
+
+        byte[] arr = intent.getByteArrayExtra("img");
+        this.imgBitmap = BitmapFactory.decodeByteArray(arr, 0, arr.length);
+        imgView.setImageBitmap(imgBitmap);
     }
 
     @Override
@@ -75,11 +78,15 @@ public class itemDetail extends AppCompatActivity{
 
                 intent.putExtra("name", this.name.getText().toString());
                 intent.putExtra("phone_number", this.phone_number.getText().toString());
-                intent.putExtra("img", this.imgIdx);
                 intent.putExtra("memo", this.memo.getText().toString());
                 intent.putExtra("isBlock", intent.getStringExtra("isBlock"));
-                startActivityForResult(intent, EDIT);
 
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                imgBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+                intent.putExtra("img", byteArray);
+
+                startActivityForResult(intent, EDIT);
                 return true;
             default: return false;
         }
@@ -92,8 +99,8 @@ public class itemDetail extends AppCompatActivity{
         Log.d("itemdetail", "callback" + resultCode);
         switch ( resultCode ) {
             case EDIT:
-                imgIdx = data.getIntExtra("img", 0);
-                img.setImageResource(profile_image_lIst.getImg(imgIdx));
+                byte[] arr = data.getByteArrayExtra("img");
+                imgView.setImageBitmap(BitmapFactory.decodeByteArray(arr, 0, arr.length));
                 name.setText(data.getStringExtra("name"));
                 phone_number.setText(data.getStringExtra("phone_number"));
                 memo.setText(data.getStringExtra("memo"));

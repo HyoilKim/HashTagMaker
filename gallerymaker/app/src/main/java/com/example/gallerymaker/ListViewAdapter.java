@@ -1,6 +1,7 @@
 package com.example.gallerymaker;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +20,7 @@ public class ListViewAdapter extends BaseAdapter implements Filterable {
     private ArrayList<ListViewItem> listViewItemList = new ArrayList<ListViewItem>() ;
     private ArrayList<ListViewItem> filteredItemList = listViewItemList;
     Filter listFilter;
-    ListView_ImageList profile_image_lIst = new ListView_ImageList();
+    ListView_ImageList profile_image_lIst;
 
     // ListViewAdapter의 생성자
     public ListViewAdapter() {
@@ -53,10 +54,12 @@ public class ListViewAdapter extends BaseAdapter implements Filterable {
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
 //        ListViewItem listViewItem = listViewItemList.get(position);
         ListViewItem listViewItem = filteredItemList.get(position);
-
-        iconImageView.setImageResource( profile_image_lIst.getImg ( listViewItem.getImg() ) );
         nameView.setText(listViewItem.getName());
-        phoneNumberView.setText(listViewItem.getPhoneNumber());
+        phoneNumberView.setText( listViewItem.getPhoneNumber() );
+        Bitmap tmp = Bitmap.createScaledBitmap(listViewItem.getImg(), 20, 20, true);
+        iconImageView.setImageBitmap( tmp );
+
+
         return convertView;
     }
 
@@ -74,10 +77,9 @@ public class ListViewAdapter extends BaseAdapter implements Filterable {
     }
 
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
-    public void addItem(int img, String name, String phone_number, boolean isBlock, String memo) {
+    public void addItem(Bitmap imgBitmap, String name, String phone_number, boolean isBlock, String memo) {
         ListViewItem item = new ListViewItem();
-
-        item.setImg(img);
+        item.setImg(imgBitmap);
         item.setName(name);
         item.setPhoneNumber(phone_number);
         item.setIsBlock(isBlock);

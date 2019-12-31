@@ -101,8 +101,8 @@ public class HashtagFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        getActivity().findViewById(R.id.editTextFilter).setVisibility(View.GONE);
-        getActivity().findViewById(R.id.searchIcon).setVisibility(View.GONE);
+//        getActivity().findViewById(R.id.editTextFilter).setVisibility(View.GONE);
+//        getActivity().findViewById(R.id.searchIcon).setVisibility(View.GONE);
 //        getActivity().findViewById(R.id.nav_host_fragment).setPadding();
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){

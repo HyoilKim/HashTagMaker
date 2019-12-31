@@ -83,6 +83,7 @@ public class ListViewAdapter extends BaseAdapter implements Filterable {
         item.setIsBlock(isBlock);
         item.setMemo(memo);
         listViewItemList.add(item);
+        Log.d("added itme", name);
     }
 
     @Override

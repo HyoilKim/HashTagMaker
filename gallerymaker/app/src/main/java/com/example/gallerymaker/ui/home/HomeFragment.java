@@ -53,7 +53,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-public class HomeFragment extends ListFragment {
+public class HomeFragment extends Fragment {
     private String memo;
     private boolean isBlock;
     public ListViewAdapter adapter;
@@ -66,28 +66,29 @@ public class HomeFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // show listView from json
         Log.d("on CreateView","start");
-        getActivity().findViewById(R.id.editTextFilter).setVisibility(View.VISIBLE);
-        getActivity().findViewById(R.id.searchIcon).setVisibility(View.VISIBLE);
-
-        jsonParsing(getJson());
         View v = inflater.inflate(R.layout.fragment_home, container, false);
+        listview = v.findViewById(R.id.list);
+
+        adapter = new ListViewAdapter() ;
+        jsonParsing(getJson());
+//        adapter.addItem(0, "hyoil","0101234",false, "memomo");
+        listview.setAdapter(adapter);
+
         listview = (ListView) v.findViewById(R.id.list);
+        v.findViewById(R.id.searchIcon).bringToFront();
         if (listview == null) {
             Log.d("listview","is null");
         } else {
             Log.d("listview", "is not null");
         }
-
-        jsonParsing(getJson());
-
-        EditText editTextFilter = (EditText) getActivity().findViewById(R.id.editTextFilter);
-        Log.d("editTextFilter", editTextFilter.getText().toString() + "//////////////");
+//
+        EditText editTextFilter = (EditText) v.findViewById(R.id.editTextFilter);
+//        Log.d("editTextFilter", editTextFilter.getText().toString() + "//////////////");
         editTextFilter.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -108,19 +109,53 @@ public class HomeFragment extends ListFragment {
                 }
             }
         });
-//        return inflater.inflate(R.layout.fragment_home, container, false);
-        return super.onCreateView(inflater, container, savedInstanceState);
-
+        return v;
+//        return super.onCreateView(inflater, container, savedInstanceState);
+//
 //        Log.d("on CreateView","start");
 //        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
+//
+//    @Override
+//    public void onViewCreated(@NonNull android.view.View view, @Nullable Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//        Log.d("test",getListView().getTag().toString());
 
-    @Override
-    public void onViewCreated(@NonNull android.view.View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        jsonParsing(getJson());
-    }
+//        Log.d("tag", getListView().getTag().toString());
+//        listview = view.findViewById(R.id.list);
+//
+//        if (listview == null) {
+//            Log.d("listview","is null");
+//        } else {
+//            Log.d("listview", "is not null");
+//        }
+//
+//        jsonParsing(getJson());
+//
+//        EditText editTextFilter = (EditText) view.findViewById(R.id.editTextFilter);
+//        Log.d("editTextFilter", editTextFilter.getText().toString() + "//////////////");
+//        editTextFilter.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                String filterText = s.toString() ;
+//                Log.d("after filtering", s.toString());
+//                if (filterText.length() > 0) {
+//                    listview.setFilterText(filterText) ;
+//                } else {
+//                    listview.clearTextFilter() ;
+//                }
+//            }
+//        });
+//    }
 
     // bar 추가
     @Override
@@ -161,27 +196,26 @@ public class HomeFragment extends ListFragment {
     }
 
     // 아이템 클릭 시 디테일 뷰로 전환
-
-    @Override
-    public void onListItemClick (ListView l, View v, int position, long id) {
-        // get TextView's Text.
-        ListViewItem item = (ListViewItem) l.getItemAtPosition(position) ;
-
-        String name = item.getName() ;
-        String phone_number = item.getPhoneNumber() ;
-        String memo = item.getMemo();
-        int img = item.getImg();
-        // image transfer setting
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-        Intent intent = new Intent(getActivity().getApplicationContext(), itemDetail.class);
-        intent.putExtra("name", name);
-        intent.putExtra("phone_number", phone_number);
-        intent.putExtra("img", img);
-        intent.putExtra("memo", memo);
-        startActivityForResult(intent, UPDATE_ITEM);
-
-    }
+//    @Override
+//    public void onListItemClick (ListView l, View v, int position, long id) {
+//        // get TextView's Text.
+//        ListViewItem item = (ListViewItem) l.getItemAtPosition(position) ;
+//
+//        String name = item.getName() ;
+//        String phone_number = item.getPhoneNumber() ;
+//        String memo = item.getMemo();
+//        int img = item.getImg();
+//        // image transfer setting
+//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//
+//        Intent intent = new Intent(getActivity().getApplicationContext(), itemDetail.class);
+//        intent.putExtra("name", name);
+//        intent.putExtra("phone_number", phone_number);
+//        intent.putExtra("img", img);
+//        intent.putExtra("memo", memo);
+//        startActivityForResult(intent, UPDATE_ITEM);
+//
+//    }
 
     // asset폴더의 json파일을 읽어 string 타입으로 return
     public String getJson() {
@@ -221,8 +255,7 @@ public class HomeFragment extends ListFragment {
     // json파일로 listView의 item 각각 추가
     private void jsonParsing(String json) {
 //        listview.setAdapter(adapter);
-        adapter = new ListViewAdapter() ;
-        setListAdapter(adapter);
+
         try{
             JSONArray phoneBook_list = new JSONArray(json);
 
@@ -236,6 +269,7 @@ public class HomeFragment extends ListFragment {
                 isBlock = Boolean.valueOf(item.getString("isBlock"));
                 adapter.addItem(img, name, phone_number, isBlock, memo);
             }
+            Log.d("adapter size", String.valueOf(adapter.getCount()));
         }catch (JSONException e) {
             e.printStackTrace();
         }

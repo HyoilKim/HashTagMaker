@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.ColorDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.hardware.camera2.CameraCaptureSession;
@@ -30,16 +31,23 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+
 import com.example.gallerymaker.Classifier;
 import com.example.gallerymaker.R;
 import com.example.gallerymaker.Result;
+import com.google.android.flexbox.FlexboxLayout;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -91,7 +99,11 @@ public class HashtagFragment extends Fragment {
             public void onClick(View vview) {
                 // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
                 ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("hashtags", answer);
+                answerstr = "";
+                for(int i=0;i<answer.size();i++){
+                    answerstr +=  "#" + answer.get(i) + " ";
+                }
+                ClipData clip = ClipData.newPlainText("hashtags", answerstr);
                 clipboard.setPrimaryClip(clip);
                 Toast.makeText(view.getContext(),"클립보드에 복사되었습니다", Toast.LENGTH_LONG).show();
             }
@@ -291,12 +303,15 @@ public class HashtagFragment extends Fragment {
 
     private Classifier mClassifier;
     private Result result;
-    private String answer;
+//    private String answer;
+    private String answerstr;
+    private ArrayList<String> answer;
     /**
      *  tempFile 을 bitmap 으로 변환 후 ImageView 에 설정한다.
      */
     public void setImage() {
         ImageView imageView = view.findViewById(R.id.imageView123);
+
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
@@ -350,13 +365,37 @@ public class HashtagFragment extends Fragment {
         }
 
 
-        EditText textview = view.findViewById(R.id.textView);
+//        EditText textview = view.findViewById(R.id.textView);
         result = mClassifier.classify(bmResized2, getActivity());
         answer = result.getHashtags();
         Log.d("", ""+answer);
-        textview.setText(answer);
+        FlexboxLayout tagLayout = view.findViewById(R.id.taglayout);
+        tagLayout.removeAllViews();
+        for(int i=0;i<answer.size();i++){
+            LinearLayout tagandclose = new LinearLayout(getActivity());
+            final TextView myEditText = new TextView(getActivity());
+            final ImageButton button = new ImageButton(getActivity());
+            myEditText.setText("#"+ answer.get(i) + " ");
+            myEditText.setBackground(new ColorDrawable(000000));
+            button.setImageResource(R.drawable.ic_close);
+            button.setMaxWidth(12);
+            button.setMinimumHeight(22);
+            button.setBackgroundColor(000000);
+            button.setPadding(0,0,10,15);
+            button.setAlpha(0.6f);
+            button.setOnClickListener(new Button.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    myEditText.setVisibility(View.GONE);
+                    button.setVisibility(View.GONE);
+                }
+            });
+            tagandclose.addView(myEditText);
+            tagandclose.addView(button);
+            tagLayout.addView(tagandclose);
+        }
+//        textview.setText(answer);
         view.findViewById(R.id.btnCopyTags).setVisibility(View.VISIBLE);
-        view.findViewById(R.id.btnCallInstagram).setVisibility(View.VISIBLE);
 
 
         /**

@@ -37,8 +37,9 @@ public class Result {
         mHashtags = new String[] {"instagood", "picoftheday", "ftf", "love", "daily"};
     }
 
-    public String getHashtags() {
-        String strhashtag = "";
+//    public String getHashtags() {
+//        String strhashtag = "";
+    public ArrayList<String> getHashtags() {
         ArrayList<String> objectList = new ArrayList<>();
         ArrayList<Integer> maskList = new ArrayList<>();
         ArrayList<String> finaltagList = new ArrayList<>();
@@ -77,10 +78,11 @@ public class Result {
             finaltagList.add(mHashtags[newadded]);
             newadded = (newadded + 1)%mHashtags.length;
         }
-        for (int i=0;i<finaltagList.size();i++) {
-            strhashtag += "#" + finaltagList.get(i) +" ";
-        }
-        return strhashtag;
+//        for (int i=0;i<finaltagList.size();i++) {
+//            strhashtag += "#" + finaltagList.get(i) +" ";
+//        }
+//        return strhashtag;
+        return finaltagList;
     }
 
 

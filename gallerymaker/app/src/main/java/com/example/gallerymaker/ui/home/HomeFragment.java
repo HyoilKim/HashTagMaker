@@ -54,9 +54,16 @@ public class HomeFragment extends ListFragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // show listView from json
-        jsonParsing(getJson());
+
         Log.d("on CreateView","start");
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return inflater.inflate(R.layout.fragment_home, container, false);
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull android.view.View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        jsonParsing(getJson());
     }
 
     // bar 추가

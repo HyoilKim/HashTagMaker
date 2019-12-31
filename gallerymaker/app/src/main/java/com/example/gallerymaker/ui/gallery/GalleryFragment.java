@@ -119,6 +119,7 @@ public class GalleryFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == FULL_SCREEN){
             gridView.setAdapter(imageAdapterinfrag);
+            Toast.makeText(getView().getContext(), "finisged!!!!!!!!!!!", Toast.LENGTH_SHORT).show();
         }
         else if (resultCode != Activity.RESULT_OK) {
             Toast.makeText(getView().getContext(), "취소 되었습니다.", Toast.LENGTH_SHORT).show();

@@ -2,9 +2,11 @@ package com.example.gallerymaker.ui.hashtag;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -26,20 +28,27 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+
 import com.example.gallerymaker.Classifier;
 import com.example.gallerymaker.R;
 import com.example.gallerymaker.Result;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -80,9 +89,9 @@ public class HashtagFragment extends Fragment {
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        tedPermission();
 
         view = inflater.inflate(R.layout.activity_get_image, container, false);
 
@@ -97,10 +106,85 @@ public class HashtagFragment extends Fragment {
             }
         });
 
-        view.findViewById(R.id.btnCallInstagram).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View vview) {
-                // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
+
+        view.findViewById(R.id.getimage).setOnClickListener(new View.OnClickListener(){
+            public void onClick(View vview){
+                tedPermission();
+                final CharSequence[] galorcam = {"갤러리", "카메라"};
+                AlertDialog.Builder oDialog = new AlertDialog.Builder(getContext(), android.R.style.Theme_DeviceDefault_Light_Dialog_Alert);
+                oDialog.setTitle("사진 가져오기")
+                        .setItems(galorcam, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String selectedText = galorcam[which].toString();
+                                if(selectedText == "갤러리"){
+                                    if(isPermission) goToAlbum();
+                                    else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+                                }
+                                else{
+                                    if(isPermission)  takePhoto();
+                                    else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        })
+                        .show();
+            }
+        });
+
+//        view.findViewById(R.id.btnCallInstagram).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View vview) {
+//                // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
+//                if(getPackageList()) {
+//                    Intent intent = getActivity().getPackageManager().getLaunchIntentForPackage("com.instagram.android");
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    startActivity(intent);
+//                }
+//                else {
+//                    String url = "https://play.google.com/store/apps/details?id=com.instagram.android&hl=en_US&referrer=utm_source%3Dgoogle%26utm_medium%3Dorganic%26utm_term%3Dinstagram&pcampaignid=APPU_1_2vQJXu-kCtKbmAXR6oXwAg";
+//                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//                    startActivity(i);
+//                }
+//            }
+//        });
+//
+//        view.findViewById(R.id.btnGallery).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View vview) {
+//                // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
+//                if(isPermission) {
+//                    goToAlbum();
+//                }
+//                else {
+//                    Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        });
+//
+//
+//
+//        view.findViewById(R.id.btnCamera).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
+//                if(isPermission)  {
+//                    takePhoto();
+//                }
+//                else {
+//                    Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        });
+
+        return view;
+    }
+
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+        inflater.inflate(R.menu.insta_bar, menu);
+    }
+    public boolean onOptionsItemSelected(@NonNull MenuItem item){
+        switch (item.getItemId()){
+            case R.id.insta:
                 if(getPackageList()) {
                     Intent intent = getActivity().getPackageManager().getLaunchIntentForPackage("com.instagram.android");
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -111,39 +195,30 @@ public class HashtagFragment extends Fragment {
                     Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                     startActivity(i);
                 }
-            }
-        });
-
-        view.findViewById(R.id.btnGallery).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View vview) {
-                // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
-                if(isPermission) {
-                    goToAlbum();
-                }
-                else {
-                    Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-
-
-        view.findViewById(R.id.btnCamera).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
-                if(isPermission)  {
-                    takePhoto();
-                }
-                else {
-                    Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        return view;
+//            case R.id.getPicforinsta:
+//                tedPermission();
+//                final CharSequence[] galorcam = {"갤러리", "카메라"};
+//                AlertDialog.Builder oDialog = new AlertDialog.Builder(getContext(), android.R.style.Theme_DeviceDefault_Light_Dialog_Alert);
+//                oDialog.setTitle("사진 가져오기")
+//                        .setItems(galorcam, new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                String selectedText = galorcam[which].toString();
+//                                if(selectedText == "갤러리"){
+//                                    if(isPermission) goToAlbum();
+//                                    else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+//                                }
+//                                else{
+//                                    if(isPermission)  takePhoto();
+//                                    else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+//                                }
+//                            }
+//                        })
+//                        .show();
+        }
+        return true;
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_OK) {
@@ -296,7 +371,7 @@ public class HashtagFragment extends Fragment {
      *  tempFile 을 bitmap 으로 변환 후 ImageView 에 설정한다.
      */
     public void setImage() {
-        ImageView imageView = view.findViewById(R.id.imageView123);
+//        ImageView imageView = view.findViewById(R.id.imageView123);
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
@@ -310,8 +385,8 @@ public class HashtagFragment extends Fragment {
 
         Bitmap bmRotated = rotateBitmap(originalBm, orientation);
         Log.d(TAG, "setImage : " + tempFile.getAbsolutePath());
-        int viewHeight = 500;
-        int viewWidth = 500;
+        int viewHeight = 1000;
+        int viewWidth = 1000;
         int sendsize = 300;
         float width = bmRotated.getWidth();
         float height = bmRotated.getHeight();
@@ -339,7 +414,9 @@ public class HashtagFragment extends Fragment {
             }
         }
         Bitmap bmResized2 = Bitmap.createScaledBitmap(bmRotated, sendsize, sendsize, true);
-        imageView.setImageBitmap(bmResized1);
+//        imageView.setImageBitmap(bmResized1);
+        ImageButton imageButton = view.findViewById(R.id.getimage);
+        imageButton.setImageBitmap(bmResized1);
 
 
         try {
@@ -356,7 +433,10 @@ public class HashtagFragment extends Fragment {
         Log.d("", ""+answer);
         textview.setText(answer);
         view.findViewById(R.id.btnCopyTags).setVisibility(View.VISIBLE);
-        view.findViewById(R.id.btnCallInstagram).setVisibility(View.VISIBLE);
+        view.findViewById(R.id.getimage).setAlpha(1.0f);
+//        view.findViewById(R.id.getimage).setVisibility(View.INVISIBLE);
+        view.findViewById(R.id.plzgetpic).setVisibility(View.INVISIBLE);
+//        view.findViewById(R.id.btnCallInstagram).setVisibility(View.VISIBLE);
 
 
         /**

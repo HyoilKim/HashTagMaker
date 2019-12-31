@@ -46,7 +46,6 @@
         android:scrollbars="horizontal|vertical"
         android:stretchMode="columnWidth"
         android:verticalSpacing="10dp"
-        android:layout_marginBottom="60dp"
         android:layout_marginTop="10dp"
         app:layout_constraintTop_toTopOf="parent">
 

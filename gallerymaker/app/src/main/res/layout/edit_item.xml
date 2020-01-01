@@ -39,12 +39,12 @@
         android:layout_below="@+id/edit_name"
         android:layout_weight="1"
         android:hint="phone number"
-        android:maxLength="13"
+        android:maxLength="11"
         android:textColor="#666666"
         android:textSize="18sp"
         android:layout_margin="20dp"
         android:textCursorDrawable="@drawable/cursor_color"
-        android:inputType="text"/>
+        android:inputType="numberDecimal"/>
 
     <EditText
         android:id="@+id/edit_memo"
@@ -58,7 +58,9 @@
         android:textSize="18sp"
         android:layout_margin="20dp"
         android:textCursorDrawable="@drawable/cursor_color"
-        android:inputType="text"/>
+        android:inputType="numberDecimal"
+        />
+<!--    android:inputType="text"-->
 
     <Button
         android:id="@+id/edit_delete"

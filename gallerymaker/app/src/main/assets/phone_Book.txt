@@ -2,21 +2,21 @@
     {
       "name": "Tae young",
       "img": "0",
-      "phone_number": "010-3631-1961",
+      "phone_number": "01036311961",
       "isBlock": "false",
       "memo": "best friends"
     },
     {
       "name": "Byung hyun",
       "img": "0",
-      "phone_number": "010-2732-2793",
+      "phone_number": "01027322793",
       "isBlock": "false",
       "memo": "office peer"
     },
     {
       "name": "Hyoil",
       "img": "0",
-      "phone_number": "010-8292-9862",
+      "phone_number": "01082929862",
       "isBlock": "false",
       "memo": "parent"
     }

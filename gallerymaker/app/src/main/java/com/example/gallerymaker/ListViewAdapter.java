@@ -52,14 +52,15 @@ public class ListViewAdapter extends BaseAdapter implements Filterable {
         TextView phoneNumberView = (TextView) convertView.findViewById(R.id.textView2) ;
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
-//        ListViewItem listViewItem = listViewItemList.get(position);
         ListViewItem listViewItem = filteredItemList.get(position);
         nameView.setText(listViewItem.getName());
-        phoneNumberView.setText( listViewItem.getPhoneNumber() );
+//        phoneNumberView.setText( listViewItem.getPhoneNumber() );
         Bitmap tmp = Bitmap.createScaledBitmap(listViewItem.getImg(), 200, 200, true);
         iconImageView.setImageBitmap( listViewItem.getImg() );
 
-
+        Log.d("phonenumber", listViewItem.getPhoneNumber());
+        StringBuffer str = new StringBuffer(listViewItem.getPhoneNumber());
+        phoneNumberView.setText( str.substring(0, 3) + "-" + str.substring(3, 7) + "-" + str.substring(7) );
         return convertView;
     }
 
@@ -73,7 +74,6 @@ public class ListViewAdapter extends BaseAdapter implements Filterable {
     @Override
     public Object getItem(int position) {
         return filteredItemList.get(position);
-//        return listViewItemList.get(position) ;
     }
 
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.

@@ -154,11 +154,12 @@ public class HomeFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 String filterText = s.toString() ;
                 Log.d("after filtering", s.toString());
-                if (filterText.length() > 0) {
-                    listview.setFilterText(filterText) ;
-                } else {
-                    listview.clearTextFilter() ;
-                }
+//                if (filterText.length() > 0) {
+//                    listview.setFilterText(filterText) ;
+//                } else {
+//                    listview.clearTextFilter() ;
+//                }
+                ((ListViewAdapter)listview.getAdapter()).getFilter().filter(filterText);
             }
         });
         return view;
@@ -274,7 +275,6 @@ public class HomeFragment extends Fragment {
                 String name = item.getString("name");
                 String memo = item.getString("memo");
                 isBlock = Boolean.valueOf(item.getString("isBlock"));
-
                 adapter.addItem(imgBitmap, name, phone_number, isBlock, memo);
             }
             listview.setAdapter(adapter);

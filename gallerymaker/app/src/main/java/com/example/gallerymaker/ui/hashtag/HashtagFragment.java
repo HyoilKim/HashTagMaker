@@ -36,6 +36,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -97,7 +98,6 @@ public class HashtagFragment extends Fragment {
     int imageHeight=400;
 
 
-
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -121,9 +121,6 @@ public class HashtagFragment extends Fragment {
                 Toast.makeText(view.getContext(),"클립보드에 복사되었습니다", Toast.LENGTH_LONG).show();
             }
         });
-
-
-
 
         view.findViewById(R.id.getimage).setOnClickListener(new View.OnClickListener(){
             public void onClick(View vview){

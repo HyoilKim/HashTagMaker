@@ -14,7 +14,7 @@
 
     <item
         android:id="@+id/navigation_hashtag"
-        android:icon="@drawable/ic_hashtag_black_24dp"
+        android:icon="@drawable/hashtag"
         android:title="@string/title_hashtag" />
 
 </menu>

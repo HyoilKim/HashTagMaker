@@ -7,14 +7,18 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -27,6 +31,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -60,10 +65,14 @@ public class HomeFragment extends Fragment {
     private boolean isBlock;
     public ListViewAdapter adapter;
     public ListView listview;
+    private View view;
+    private EditText searchEditText;
     private ArrayAdapter filterAdapter;
     private ListViewAdapter listViewAdapter;
+    private ActionBar actionBar;
     public static final int ADD_ITEM = 2;
     public static final int UPDATE_ITEM = 1;
+    InputMethodManager imm;
 
     public void onCreate(Bundle savedInstanceState) {
 //        listViewAdapter.addItem();
@@ -74,18 +83,32 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // show listView from json
         Log.d("on CreateView","start");
-        View v = inflater.inflate(R.layout.fragment_home, container, false);
-        listview = v.findViewById(R.id.list);
+        view = inflater.inflate(R.layout.fragment_home, container, false);
+        listview = view.findViewById(R.id.list);
+        imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        actionBar = ((MainActivity) getActivity()).getSupportActionBar();
+        actionBar.setTitle("연락처");
+
+//        ((MainActivity) getActivity()).getSupportActionBar().
+//        getSupportActionBar().setTitle(Html.fromHtml("<font color=\"red\">" + getString(R.string.app_name) + "</font>"));
 
         jsonParsing(getJson());
 
-        listview = (ListView) v.findViewById(R.id.list);
-        v.findViewById(R.id.searchIcon).bringToFront();
+        listview = (ListView) view.findViewById(R.id.list);
+        view.findViewById(R.id.searchIcon).bringToFront();
         if (listview == null) {
             Log.d("listview","is null");
         } else {
             Log.d("listview", "is not null");
         }
+//        view.setOnTouchListener(new View.OnTouchListener(){
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                Log.d("asdfasfasdf","clickced");
+//                imm.hideSoftInputFromWindow(view.findViewById(R.id.editTextFilter).getWindowToken(), 0);
+//                return false;
+//            }
+//        });
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -111,7 +134,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        EditText editTextFilter = (EditText) v.findViewById(R.id.editTextFilter);
+        EditText editTextFilter = (EditText) view.findViewById(R.id.editTextFilter);
 //        Log.d("editTextFilter", editTextFilter.getText().toString() + "//////////////");
         editTextFilter.addTextChangedListener(new TextWatcher() {
             @Override
@@ -133,11 +156,7 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
-        return v;
-//        return super.onCreateView(inflater, container, savedInstanceState);
-//
-//        Log.d("on CreateView","start");
-//        return inflater.inflate(R.layout.fragment_home, container, false);
+        return view;
     }
 
     // bar 추가

@@ -14,6 +14,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
@@ -27,7 +28,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,20 +40,15 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
@@ -75,6 +74,7 @@ public class HashtagFragment extends Fragment {
     private static final int PICK_FROM_ALBUM = 1;
     private static final int PICK_FROM_CAMERA = 2;
     private File tempFile;
+    private InputMethodManager imm;
 
 
     private SurfaceView mSurfaceView, mSurfaceView_transparent;
@@ -100,10 +100,8 @@ public class HashtagFragment extends Fragment {
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         setHasOptionsMenu(true);
-//        getActivity().findViewById(R.id.editTextFilter).setVisibility(View.GONE);
-//        getActivity().findViewById(R.id.searchIcon).setVisibility(View.GONE);
-//        getActivity().findViewById(R.id.nav_host_fragment).setPadding();
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
@@ -123,6 +121,8 @@ public class HashtagFragment extends Fragment {
                 Toast.makeText(view.getContext(),"클립보드에 복사되었습니다", Toast.LENGTH_LONG).show();
             }
         });
+
+
 
 
         view.findViewById(R.id.getimage).setOnClickListener(new View.OnClickListener(){
@@ -146,6 +146,66 @@ public class HashtagFragment extends Fragment {
                             }
                         })
                         .show();
+            }
+        });
+
+        final EditText edittext = (EditText) view.findViewById(R.id.taginput);
+        InputFilter filter = new InputFilter() {
+            public CharSequence filter(CharSequence source, int start, int end,
+                                       Spanned dest, int dstart, int dend) {
+                for (int i = start; i < end; i++) {
+                    if (Character.isWhitespace(source.charAt(i))) {
+                        return "";
+                    }
+                }
+                return null;
+            }
+        };
+        InputFilter maxLengthFilter = new InputFilter.LengthFilter(40);
+        edittext.setFilters(new InputFilter[] { filter, maxLengthFilter });
+        edittext.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Perform action on key press
+                    final String hashtag = edittext.getText().toString();
+                    if(answer.contains(hashtag) == false) {
+                        FlexboxLayout tagLayout = view.findViewById(R.id.taglayout);
+                        LinearLayout tagandclose = new LinearLayout(getActivity());
+                        final TextView myEditText = new TextView(getActivity());
+                        final ImageButton button = new ImageButton(getActivity());
+                        myEditText.setText("#" + hashtag + " ");
+                        myEditText.setBackground(new ColorDrawable(000000));
+                        myEditText.setTypeface(null, Typeface.BOLD);
+                        myEditText.setTextSize(17);
+                        button.setImageResource(R.drawable.ic_close);
+                        button.setMaxWidth(12);
+                        button.setMinimumHeight(22);
+                        button.setBackgroundColor(000000);
+                        button.setPadding(0, 0, 10, 15);
+                        button.setAlpha(0.6f);
+                        button.setOnClickListener(new Button.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                answer.remove(hashtag);
+                                myEditText.setVisibility(View.GONE);
+                                button.setVisibility(View.GONE);
+                            }
+                        });
+                        tagandclose.addView(myEditText);
+                        tagandclose.addView(button);
+                        tagLayout.addView(tagandclose);
+                        answer.add(hashtag);
+                        edittext.setText("");
+                        edittext.setHint("Add Hashtags");
+                        return true;
+                    }
+                    edittext.setText("");
+                    edittext.setHint("Add Hashtags");
+                    return false;
+                }
+                return false;
             }
         });
 
@@ -196,6 +256,7 @@ public class HashtagFragment extends Fragment {
 
         return view;
     }
+
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
         inflater.inflate(R.menu.insta_bar, menu);
@@ -439,7 +500,28 @@ public class HashtagFragment extends Fragment {
         Bitmap bmResized2 = Bitmap.createScaledBitmap(bmRotated, sendsize, sendsize, true);
 //        imageView.setImageBitmap(bmResized1);
         ImageButton imageButton = view.findViewById(R.id.getimage);
-        imageButton.setImageBitmap(bmResized1);
+        if (bmRotated.getWidth() >= bmRotated.getHeight()){
+
+            bmResized1 = Bitmap.createBitmap(
+                    bmRotated,
+                    bmRotated.getWidth()/2 - bmRotated.getHeight()/2,
+                    0,
+                    bmRotated.getHeight(),
+                    bmRotated.getHeight()
+            );
+
+        }else{
+
+            bmResized1 = Bitmap.createBitmap(
+                    bmRotated,
+                    0,
+                    bmRotated.getHeight()/2 -bmRotated.getWidth()/2,
+                    bmRotated.getWidth(),
+                    bmRotated.getWidth()
+            );
+        }
+        Bitmap bmResized3 = Bitmap.createScaledBitmap(bmResized1, 1500, 1500, true);
+        imageButton.setImageBitmap(bmResized3);
 
 
         try {
@@ -468,8 +550,11 @@ public class HashtagFragment extends Fragment {
             LinearLayout tagandclose = new LinearLayout(getActivity());
             final TextView myEditText = new TextView(getActivity());
             final ImageButton button = new ImageButton(getActivity());
-            myEditText.setText("#"+ answer.get(i) + " ");
+            final String hashtag = answer.get(i);
+            myEditText.setText("#"+ hashtag + " ");
             myEditText.setBackground(new ColorDrawable(000000));
+            myEditText.setTypeface(null, Typeface.BOLD);
+            myEditText.setTextSize(17);
             button.setImageResource(R.drawable.ic_close);
             button.setMaxWidth(12);
             button.setMinimumHeight(22);
@@ -479,6 +564,7 @@ public class HashtagFragment extends Fragment {
             button.setOnClickListener(new Button.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    answer.remove(hashtag);
                     myEditText.setVisibility(View.GONE);
                     button.setVisibility(View.GONE);
                 }
@@ -490,6 +576,7 @@ public class HashtagFragment extends Fragment {
 //        textview.setText(answer);
 
         view.findViewById(R.id.btnCopyTags).setVisibility(View.VISIBLE);
+        view.findViewById(R.id.taginput).setVisibility(View.VISIBLE);
         view.findViewById(R.id.getimage).setAlpha(1.0f);
 //        view.findViewById(R.id.getimage).setVisibility(View.INVISIBLE);
         view.findViewById(R.id.plzgetpic).setVisibility(View.INVISIBLE);

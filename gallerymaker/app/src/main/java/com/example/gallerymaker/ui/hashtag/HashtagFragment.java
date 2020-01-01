@@ -209,7 +209,7 @@ public class HashtagFragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int keyCode, KeyEvent event) {
                 // If the event is a key-down event on the "enter" button
-                if (keyCode== EditorInfo.IME_ACTION_SEND) {
+                if (keyCode== EditorInfo.IME_ACTION_DONE) {
                     // Perform action on key press
                     final String hashtag = edittext.getText().toString();
                     if(answer.contains(hashtag) == false) {

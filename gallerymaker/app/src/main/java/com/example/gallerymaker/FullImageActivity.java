@@ -56,7 +56,7 @@ public class FullImageActivity extends AppCompatActivity {
     public void onClick_delete(View view){
         position = pager.getCurrentItem();
         new AlertDialog.Builder(this)
-                .setTitle("몰입캠프>갤러리")
+                .setTitle("갤러리")
                 .setMessage("삭제하시겠습니까?")
                 .setIcon(R.drawable.icons8_trash)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {

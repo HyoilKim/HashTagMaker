@@ -466,6 +466,7 @@ public class add_item extends AppCompatActivity {
             // 정렬
             sortJsonArray(jsonArray);
 
+
             // 수정된 josn 배열을 josn파일에 넣기
             BufferedWriter bw = new BufferedWriter(new FileWriter(getFilesDir() + "phoneBook.txt", false));
             bw.write(jsonArray.toString());
@@ -517,6 +518,7 @@ public class add_item extends AppCompatActivity {
         for (int i = 0; i < jsonList.size(); i++) {
             try {
                 jsonArray.put(i, jsonList.get(i));
+                Log.d("after sort", jsonList.get(i).getString("name"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }

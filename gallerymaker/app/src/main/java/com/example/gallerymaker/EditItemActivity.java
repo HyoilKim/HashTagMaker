@@ -39,7 +39,9 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.graphics.drawable.DrawableCompat;
 
+import com.example.gallerymaker.ui.gallery.GalleryFragment;
 import com.example.gallerymaker.ui.home.HomeFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
@@ -108,7 +110,7 @@ public class EditItemActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        ((AppCompatActivity)this).getSupportActionBar().setTitle("");
+        ((AppCompatActivity) this).getSupportActionBar().setTitle("");
         this.name = (EditText) findViewById(R.id.edit_name);
         this.phoneNumber = (EditText) findViewById(R.id.edit_phoneNumber);
         this.imgView = (ImageView) findViewById(R.id.edit_img);
@@ -118,7 +120,7 @@ public class EditItemActivity extends AppCompatActivity {
         // ByteArray -> Bitmap
         byte[] arr = intent.getByteArrayExtra("img");
         this.imgBitmap = this.tmpImgBitmap = BitmapFactory.decodeByteArray(arr, 0, arr.length);
-        this.imgView.setImageBitmap( BitmapFactory.decodeByteArray(arr, 0, arr.length) );
+        this.imgView.setImageBitmap(BitmapFactory.decodeByteArray(arr, 0, arr.length));
 
         // 수정 전 정보 저장(tmp...)
         this.tmpName = intent.getStringExtra("name");
@@ -150,19 +152,19 @@ public class EditItemActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 String selectedText = galorcam[which].toString();
-                                if(selectedText == "앨범"){
-                                    if(isPermission) goToAlbum();
-                                    else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
-                                }
-                                else if (selectedText == "카메라"){
-                                    if(isPermission)  takePhoto();
-                                    else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
-                                }
-                                else{
+                                if (selectedText == "앨범") {
+                                    if (isPermission) goToAlbum();
+                                    else
+                                        Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+                                } else if (selectedText == "카메라") {
+                                    if (isPermission) takePhoto();
+                                    else
+                                        Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+                                } else {
 //                                    imgBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_icon);
 
-                                    imgBitmap = getBitmapFromVectorDrawable(EditItemActivity.this, R.drawable.ic_icon);
-                                    imgBitmap = imgBitmap.createScaledBitmap(imgBitmap, 25, 25, true);
+                                    imgBitmap = getBitmapFromVectorDrawable(EditItemActivity.this, R.drawable.user);
+                                    imgBitmap = imgBitmap.createScaledBitmap(imgBitmap, 200, 200, true);
                                     Bitmap buttonSetImg = imgBitmap.createScaledBitmap(imgBitmap, imgButton.getWidth(), imgButton.getHeight(), true);
                                     imgButton.setImageBitmap(buttonSetImg);
 
@@ -179,63 +181,105 @@ public class EditItemActivity extends AppCompatActivity {
         deleteItemButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("delete","button clicked");
-                String json = "";
-                String str = "";
-                try {
-                    BufferedReader br = new BufferedReader(new FileReader(getFilesDir()+"phoneBook.txt"));
-                    while(( ( str = br.readLine() ) != null )) {
-                        json += str + "\n";
-                    }
-
-                    // array -> list
-                    JSONArray jsonArray = new JSONArray(json);
-                    ArrayList<JSONObject> jsonList = new ArrayList<>();
-                    for (int i = 0; i < jsonArray.length(); i++) jsonList.add((JSONObject) jsonArray.get(i));
-
-                    // item의 전화번호와 json의 전화번호가 같으면 해당 object삭제
-                    String itemPhoneNumber = phoneNumber.getText().toString();
-                    String tmp = "";
-                    for (int i = 0; i < jsonList.size(); i++) {
-                        if ( jsonList.get(i).has("phone_number") ) {
-                            tmp = jsonList.get(i).getString("phone_number");
-                            if( tmp.equals(itemPhoneNumber) ) {
-                                jsonList.remove(i);
-                                break;
-                            }
-                        } else {
-                            jsonList.remove(i);
-                            break;
-                        }
-                    }
-                    // 삭제한 내용을 다시 json file에 저장
-                    JSONArray deletedJsonArray = new JSONArray();
-                    for (JSONObject o : jsonList) deletedJsonArray.put(o);
-
-                    BufferedWriter bw = new BufferedWriter(new FileWriter(getFilesDir() + "phoneBook.txt", false));
-                    bw.write(deletedJsonArray.toString());
-                    bw.close();
-
-                    for (int i = 0; i < BaseActivity.actList.size(); i++) {
-                        BaseActivity.actList.get(i).finish();
-                        BaseActivity.actList.remove(i);
-                    }
-                    // 삭제 안될 시 문제 발생 가능
-                    Intent intent1 = new Intent(EditItemActivity.this, MainActivity.class);
-                    startActivity(intent1);
-                    finish();
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                onClick_delete(v);
             }
+
         });
+
+
     }
 
+
+    public void onClick_delete (View view){
+        Log.d("delete", "button clicked");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog dialog = builder
+                .setTitle("연락처")
+                .setMessage("삭제하시겠습니까?")
+                .setIcon(R.drawable.icons8_trash)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //확인시
+                        String json = "";
+                        String str = "";
+                        try {
+                            BufferedReader br = new BufferedReader(new FileReader(getFilesDir() + "phoneBook.txt"));
+                            while (((str = br.readLine()) != null)) {
+                                json += str + "\n";
+                            }
+
+                            // array -> list
+                            JSONArray jsonArray = new JSONArray(json);
+                            ArrayList<JSONObject> jsonList = new ArrayList<>();
+                            for (int i = 0; i < jsonArray.length(); i++)
+                                jsonList.add((JSONObject) jsonArray.get(i));
+
+                            // item의 전화번호와 json의 전화번호가 같으면 해당 object삭제
+                            String itemPhoneNumber = phoneNumber.getText().toString();
+                            String tmp = "";
+
+                            for (int i = 0; i < jsonList.size(); i++) {
+                                if (jsonList.get(i).has("phone_number")) {
+                                    tmp = jsonList.get(i).getString("phone_number");
+                                    if (tmp.equals(itemPhoneNumber)) {
+                                        Log.d("phone_num", "" + itemPhoneNumber + "              " + tmp);
+                                        jsonList.remove(i);
+                                        break;
+                                    }
+                                } else {
+                                    jsonList.remove(i);
+                                    break;
+                                }
+                            }
+                            // 삭제한 내용을 제외하고 json file에 저장
+                            JSONArray deletedJsonArray = new JSONArray();
+                            for (JSONObject o : jsonList) deletedJsonArray.put(o);
+
+                            BufferedWriter bw = new BufferedWriter(new FileWriter(getFilesDir() + "phoneBook.txt", false));
+                            bw.write(deletedJsonArray.toString());
+                            Log.d("deleted json", deletedJsonArray.toString());
+                            bw.close();
+
+                            for (int i = 0; i < BaseActivity.actList.size(); i++) {
+                                BaseActivity.actList.get(i).finish();
+                                BaseActivity.actList.remove(i);
+                            }
+                            // 삭제 안될 시 문제 발생 가능
+//                    Intent intent1 = new Intent(EditItemActivity.this, HomeFragment.class);
+//                    startActivity(intent1);
+                            setResult(3);
+                            finish();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //취소시
+                    }
+                })
+                .create();
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface arg0) {
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setBackgroundColor(Color.WHITE);
+                Log.d("@@@@@@@@@@@@a", ""+dialog.getButton(AlertDialog.BUTTON_POSITIVE).toString());
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setPadding(0,0,5,0);
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setBackgroundColor(Color.WHITE);
+            }
+        });
+        dialog.show();
+
+    }
     public static Bitmap getBitmapFromVectorDrawable(Context context, int drawableId) {
         Drawable drawable = ContextCompat.getDrawable(context, drawableId);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {

@@ -189,20 +189,20 @@ public class HomeFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch ( resultCode ) {
-            case ADD_ITEM:
-                // json 다시 읽어오기
-                jsonParsing(getJson());
-                listview.setAdapter(adapter);
+        jsonParsing(getJson());
+        listview.setAdapter(adapter);
+//        switch ( resultCode ) {
+//            case ADD_ITEM:
+//                // json 다시 읽어오기
+//                listview.setAdapter(adapter);
+////                adapter.notifyDataSetChanged();
+//                break;
+//            case UPDATE_ITEM:
+//                listview.setAdapter(adapter);
 //                adapter.notifyDataSetChanged();
-                break;
-            case UPDATE_ITEM:
-                jsonParsing(getJson());
-                listview.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-                break;
-            default: break;
-        }
+//                break;
+//            default: break;
+//        }
     }
 
     // asset폴더의 json파일을 읽어 string 타입으로 return

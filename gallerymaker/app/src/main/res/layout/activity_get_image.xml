@@ -31,12 +31,12 @@
 
     <ImageButton
         android:id="@+id/btnCopyTags"
-        android:layout_width="36dp"
-        android:layout_height="35dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:adjustViewBounds="true"
         android:background="#00F7F1F1"
-        android:maxWidth="30dp"
-        android:maxHeight="30dp"
+        android:maxWidth="40dp"
+        android:maxHeight="40dp"
         android:scaleType="fitCenter"
         android:visibility="invisible"
         app:layout_constrainedHeight="true"
@@ -111,23 +111,24 @@
 
     <ScrollView
         android:layout_height="80dp"
-        android:layout_width="300dp"
+        android:layout_width="310dp"
         android:orientation="vertical"
         android:paddingTop="10dp"
+        android:paddingLeft="20dp"
         android:fillViewport="true"
         android:id = "@+id/hashtags"
         android:maxHeight = "100dp"
         android:maxWidth="300dp"
+        android:gravity="left"
         app:layout_constraintTop_toBottomOf="@id/getimage"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintLeft_toLeftOf="parent">
 
         <com.google.android.flexbox.FlexboxLayout
             android:id="@+id/taglayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="left"
-            android:maxWidth="300dp"
+            android:maxWidth="280dp"
             android:maxHeight = "130dp"
             android:orientation="horizontal"
             app:flexWrap="wrap"/>
@@ -148,7 +149,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/hashtags"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:imeOptions="actionSend"
+        android:imeOptions="actionDone"
         android:inputType="text">
 
     </EditText>

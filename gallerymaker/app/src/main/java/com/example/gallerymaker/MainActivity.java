@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("start", "~");
 
 //        read assets file(initialize) -> 주석처리
+        Log.d("@@@@@@@@@@@@@@00", "Don't!!!!!!!!!!!!!!!!!!!!");
         String json = "";
         try {
             InputStream is = getResources().getAssets().open("phone_Book.txt");

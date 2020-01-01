@@ -47,20 +47,25 @@ public class ListViewAdapter extends BaseAdapter implements Filterable {
         }
 
         // 반복적으로 실행되어 화면에 표시되는 item
-        ImageView iconImageView = (ImageView) convertView.findViewById(R.id.listview_img) ;
-        TextView nameView = (TextView) convertView.findViewById(R.id.textView1) ;
-        TextView phoneNumberView = (TextView) convertView.findViewById(R.id.textView2) ;
+        ImageView iconImageView = (ImageView) convertView.findViewById(R.id.listview_img);
+        TextView nameView = (TextView) convertView.findViewById(R.id.textView1);
+        TextView phoneNumberView = (TextView) convertView.findViewById(R.id.textView2);
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         ListViewItem listViewItem = filteredItemList.get(position);
         nameView.setText(listViewItem.getName());
 //        phoneNumberView.setText( listViewItem.getPhoneNumber() );
         Bitmap tmp = Bitmap.createScaledBitmap(listViewItem.getImg(), 200, 200, true);
-        iconImageView.setImageBitmap( listViewItem.getImg() );
+        iconImageView.setImageBitmap(listViewItem.getImg());
 
         Log.d("phonenumber", listViewItem.getPhoneNumber());
         StringBuffer str = new StringBuffer(listViewItem.getPhoneNumber());
-        phoneNumberView.setText( str.substring(0, 3) + "-" + str.substring(3, 7) + "-" + str.substring(7) );
+        if (str.length() == 11) {
+            phoneNumberView.setText(str.substring(0, 3) + "-" + str.substring(3, 7) + "-" + str.substring(7));
+        }
+        else
+            phoneNumberView.setText(str);
+
         return convertView;
     }
 

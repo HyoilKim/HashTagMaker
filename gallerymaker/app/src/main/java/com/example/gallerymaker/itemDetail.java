@@ -35,6 +35,7 @@ import java.io.InputStream;
 public class itemDetail extends AppCompatActivity{
     private ListView_ImageList profile_image_lIst;
     public static final int EDIT = 1;
+    public static final int DELETE = 3;
     private TextView name;
     private TextView phone_number;
     private Bitmap imgBitmap;
@@ -111,6 +112,10 @@ public class itemDetail extends AppCompatActivity{
                 phone_number.setText(data.getStringExtra("phone_number"));
                 memo.setText(data.getStringExtra("memo"));
                 break;
+            case DELETE: {
+                finish();
+                break;
+            }
                 default: break;
         }
     }

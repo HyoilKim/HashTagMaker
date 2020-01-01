@@ -111,7 +111,8 @@
   "sheep": [
     {
       "sheep": "21",
-      "farmanimals": "22"
+      "farmanimals": "22",
+      "동물농장": "22"
     }
   ],
   "cow": [
@@ -261,7 +262,8 @@
   ],
   "bowl": [
     {
-      "bowl": "21"
+      "bowl": "21",
+      "foodstagram": "21"
     }
   ],
   "banana": [
@@ -293,7 +295,7 @@
   ],
   "broccoli": [
     {
-      "foodstagram": "30",
+      "diet": "30",
       "broccoli": "21",
       "fresh": "21"
     }

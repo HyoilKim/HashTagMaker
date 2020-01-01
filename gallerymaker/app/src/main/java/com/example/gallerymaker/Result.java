@@ -34,7 +34,7 @@ public class Result {
         mgoodPercent = getGoodPercent();
         mjson = readJsonFile(activity);
         mretMap = getHashtagMap();
-        mHashtags = new String[] {"instagood", "picoftheday", "ftf", "love", "daily"};
+        mHashtags = new String[] {"instagood", "picoftheday", "ftf", "선팔맞팔", "daily", "HappyNewYear", "2020"};
     }
 
     //    public String getHashtags() {

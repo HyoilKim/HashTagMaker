@@ -1,6 +1,5 @@
 package com.example.gallerymaker;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.widget.ImageView;
 
 public class ListViewItem {

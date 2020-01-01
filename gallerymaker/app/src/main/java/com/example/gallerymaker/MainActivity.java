@@ -22,6 +22,13 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+
 public class MainActivity extends AppCompatActivity {
     public ImageAdapter imageAdapter;
     public  static Context context_main;
@@ -45,6 +52,27 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
         Log.d("start", "~");
+
+//        read assets file(initialize) -> 주석처리
+        String json = "";
+        try {
+            InputStream is = getResources().getAssets().open("phone_Book.txt");
+            int fileSize = is.available();
+
+            byte[] buffer = new byte[fileSize];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+            Log.d("asset json", json);
+
+            BufferedWriter bw = new BufferedWriter(new FileWriter(getFilesDir() + "phoneBook.txt", false));
+            bw.write(json);
+            bw.close();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }

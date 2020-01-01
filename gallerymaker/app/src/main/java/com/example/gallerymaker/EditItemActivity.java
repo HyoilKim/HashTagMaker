@@ -9,9 +9,13 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -31,7 +35,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.example.gallerymaker.ui.home.HomeFragment;
 import com.gun0912.tedpermission.PermissionListener;
@@ -99,15 +105,16 @@ public class EditItemActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_item);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
+        ((AppCompatActivity)this).getSupportActionBar().setTitle("");
         this.name = (EditText) findViewById(R.id.edit_name);
         this.phoneNumber = (EditText) findViewById(R.id.edit_phoneNumber);
         this.imgView = (ImageView) findViewById(R.id.edit_img);
         this.memo = (EditText) findViewById(R.id.edit_memo);
 
         final Intent intent = getIntent();
-
         // ByteArray -> Bitmap
         byte[] arr = intent.getByteArrayExtra("img");
         this.imgBitmap = this.tmpImgBitmap = BitmapFactory.decodeByteArray(arr, 0, arr.length);
@@ -120,6 +127,16 @@ public class EditItemActivity extends AppCompatActivity {
         name.setText(tmpName);
         phoneNumber.setText(tmpPhoneNumber);
         memo.setText(tmpMemo);
+
+        if (name.getText().length() != 0) {
+            name.setTextColor(Color.parseColor("#000000"));
+        }
+        if (phoneNumber.getText().length() != 0) {
+            phoneNumber.setTextColor(Color.parseColor("#000000"));
+        }
+        if (memo.getText().length() != 0) {
+            memo.setTextColor(Color.parseColor("#000000"));
+        }
 
         final ImageButton imgButton = (ImageButton) findViewById(R.id.edit_img);
         imgButton.setOnClickListener(new View.OnClickListener() {
@@ -142,10 +159,13 @@ public class EditItemActivity extends AppCompatActivity {
                                     else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
                                 }
                                 else{
-                                    imgBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.user);
-                                    imgBitmap = imgBitmap.createScaledBitmap(imgBitmap, 20, 20, true);
+//                                    imgBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_icon);
+
+                                    imgBitmap = getBitmapFromVectorDrawable(EditItemActivity.this, R.drawable.ic_icon);
+                                    imgBitmap = imgBitmap.createScaledBitmap(imgBitmap, 25, 25, true);
                                     Bitmap buttonSetImg = imgBitmap.createScaledBitmap(imgBitmap, imgButton.getWidth(), imgButton.getHeight(), true);
                                     imgButton.setImageBitmap(buttonSetImg);
+
                                 }
                             }
                         })
@@ -216,6 +236,20 @@ public class EditItemActivity extends AppCompatActivity {
         });
     }
 
+    public static Bitmap getBitmapFromVectorDrawable(Context context, int drawableId) {
+        Drawable drawable = ContextCompat.getDrawable(context, drawableId);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            drawable = (DrawableCompat.wrap(drawable)).mutate();
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
+    }
     /**
      *  앨범에서 이미지 가져오기
      */
@@ -486,6 +520,9 @@ public class EditItemActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch ( item.getItemId() ) {
+            case android.R.id.home:
+                finish();
+                return true;
             case R.id.ok_bar:
                 Log.d("complete edit button", "at edit view");
                 // item detail에 전송

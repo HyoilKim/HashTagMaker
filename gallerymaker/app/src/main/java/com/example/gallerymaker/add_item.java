@@ -17,10 +17,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,6 +44,7 @@ import com.gun0912.tedpermission.TedPermission;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -80,6 +83,7 @@ public class add_item extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_item);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         galleryImgBitmap = BitmapFactory.decodeResource(this.getApplicationContext().getResources(), getResources().getIdentifier("user", "drawable", this.getPackageName()));
 
@@ -87,6 +91,7 @@ public class add_item extends AppCompatActivity {
         Log.d("init bitmap", galleryImgBitmap.toString());
         Log.d("init bitmap", galleryImgBitmap.toString());
 
+        ((AppCompatActivity)this).getSupportActionBar().setTitle("");
         ImageButton imgButton = (ImageButton) findViewById(R.id.add_img);
         imgButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -230,9 +235,10 @@ public class add_item extends AppCompatActivity {
                     bmRotated.getWidth()
             );
         }
-        Bitmap bmResized = Bitmap.createScaledBitmap(bmResized1, width, height, true);
-        galleryImgBitmap = bmResized;
-        imageButton.setImageBitmap(bmResized);
+        Bitmap bmResized2 = Bitmap.createScaledBitmap(bmResized1, 400, 400, true);
+        galleryImgBitmap = bmResized2;
+
+        imageButton.setImageBitmap(bmResized1);
 
         /**
          *  tempFile 사용 후 null 처리를 해줘야 합니다.
@@ -335,6 +341,7 @@ public class add_item extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.ok_bar, menu);
         return true;
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -398,6 +405,9 @@ public class add_item extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch ( item.getItemId() ) {
+            case android.R.id.home:
+                finish();
+                return true;
             case R.id.ok_bar:
                 Log.d("count", ListView_ImageList.getCount()+"");
                 ListView_ImageList.addImg(galleryImgBitmap);
@@ -422,7 +432,6 @@ public class add_item extends AppCompatActivity {
                 Intent intent = new Intent(add_item.this, MainActivity.class);
                 setResult(HomeFragment.ADD_ITEM, intent);
                 finish();
-
                 return true;
             default: return false;
         }
@@ -513,4 +522,5 @@ public class add_item extends AppCompatActivity {
             }
         }
     }
+
 }

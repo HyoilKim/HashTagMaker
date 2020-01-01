@@ -23,7 +23,8 @@
         >
     </ImageView>
 
-    <com.example.gallerymaker.ClearEditText
+
+    <EditText
         android:id="@+id/editTextFilter"
         android:layout_width="match_parent"
         android:layout_height="35dp"
@@ -33,7 +34,7 @@
         android:layout_marginTop="2dp"
         android:maxLength="9"
         android:background="@drawable/edittext_corner">
-    </com.example.gallerymaker.ClearEditText>
+    </EditText>
 
 
     <ListView

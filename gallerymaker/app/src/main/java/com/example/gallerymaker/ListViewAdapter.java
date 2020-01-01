@@ -56,8 +56,8 @@ public class ListViewAdapter extends BaseAdapter implements Filterable {
         ListViewItem listViewItem = filteredItemList.get(position);
         nameView.setText(listViewItem.getName());
         phoneNumberView.setText( listViewItem.getPhoneNumber() );
-        Bitmap tmp = Bitmap.createScaledBitmap(listViewItem.getImg(), 20, 20, true);
-        iconImageView.setImageBitmap( tmp );
+        Bitmap tmp = Bitmap.createScaledBitmap(listViewItem.getImg(), 200, 200, true);
+        iconImageView.setImageBitmap( listViewItem.getImg() );
 
 
         return convertView;

@@ -45,7 +45,8 @@ public class itemDetail extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_detailview);
         BaseActivity.actList.add(itemDetail.this);
-
+        ((AppCompatActivity)this).getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // item의 정보를 가져와 detail 화면으로 보여주기
         Intent intent = getIntent();
         this.name = (TextView)findViewById(R.id.detail_name);
@@ -68,10 +69,15 @@ public class itemDetail extends AppCompatActivity{
         return true;
     }
 
-    // edit 버튼 클릭시 화면 전환
+    // edit 버튼 클릭시 화면 전환 or 뒤로가기
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch ( item.getItemId() ) {
+            case android.R.id.home:
+                Intent intent1 = new Intent(itemDetail.this, MainActivity.class);
+                setResult(HomeFragment.UPDATE_ITEM, intent1);
+                finish();
+                return true;
             case R.id.edit_bar:
                 Log.d("edit_bar at itemDetail", "clicked");
                 Intent intent = new Intent(itemDetail.this, EditItemActivity.class);
@@ -92,7 +98,7 @@ public class itemDetail extends AppCompatActivity{
         }
     }
 
-    // editView로 넘어가서 수정한 값을 detailView에 보여줌
+    // editView에서 수정한 값을 반영
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

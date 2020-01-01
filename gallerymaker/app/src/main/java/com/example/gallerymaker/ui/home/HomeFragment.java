@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
@@ -32,6 +35,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -247,8 +252,9 @@ public class HomeFragment extends Fragment {
                 //getBytes: string to byteArray
                 if( item.getString("img").equals("0") ) {
                     Log.d("hey", "no img");
-                    imgBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.user);
-                    imgBitmap = imgBitmap.createScaledBitmap(imgBitmap, 20, 20, true);
+                    imgBitmap = getBitmapFromVectorDrawable(getActivity(), R.drawable.ic_icon);
+//                   imgBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_icon);
+//                    imgBitmap = imgBitmap.createScaledBitmap(imgBitmap, 36, 36, true);
                 } else {
 //                    byte[] arr = item.getString("img").getBytes();
 //                    imgBitmap = BitmapFactory.decodeByteArray(arr, 0, arr.length);
@@ -275,5 +281,20 @@ public class HomeFragment extends Fragment {
         }catch (JSONException e) {
             e.printStackTrace();
         }
+
+    }
+    public static Bitmap getBitmapFromVectorDrawable(Context context, int drawableId) {
+        Drawable drawable = ContextCompat.getDrawable(context, drawableId);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            drawable = (DrawableCompat.wrap(drawable)).mutate();
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
     }
 }

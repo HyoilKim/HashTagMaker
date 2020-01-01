@@ -36,11 +36,12 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.BaseInputConnection;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -75,7 +76,6 @@ public class HashtagFragment extends Fragment {
     private static final int PICK_FROM_ALBUM = 1;
     private static final int PICK_FROM_CAMERA = 2;
     private File tempFile;
-    private InputMethodManager imm;
 
 
     private SurfaceView mSurfaceView, mSurfaceView_transparent;
@@ -98,15 +98,13 @@ public class HashtagFragment extends Fragment {
     int imageHeight=400;
 
 
+
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         setHasOptionsMenu(true);
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-
         view = inflater.inflate(R.layout.activity_get_image, container, false);
-
         view.findViewById(R.id.btnCopyTags).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View vview) {
@@ -121,6 +119,53 @@ public class HashtagFragment extends Fragment {
                 Toast.makeText(view.getContext(),"클립보드에 복사되었습니다", Toast.LENGTH_LONG).show();
             }
         });
+        final EditText edittext = (EditText) view.findViewById(R.id.taginput);
+        view.findViewById(R.id.btnInputtag).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View vview) {
+//                BaseInputConnection mInputConnection = new BaseInputConnection(view.findViewById(R.id.taginput), true);
+//                KeyEvent k = new KeyEvent(KeyEvent.ACTION_DOWN , KeyEvent.KEYCODE_ENTER);
+//                Log.d("@@@@@@@@@@@@@@@@@@@", "f??????????????????????????????????????");
+//                mInputConnection.sendKeyEvent(k);
+                final String hashtag = edittext.getText().toString();
+                if(answer.contains(hashtag) == false) {
+                    FlexboxLayout tagLayout = view.findViewById(R.id.taglayout);
+                    LinearLayout tagandclose = new LinearLayout(getActivity());
+                    final TextView myEditText = new TextView(getActivity());
+                    final ImageButton button = new ImageButton(getActivity());
+                    myEditText.setText("#" + hashtag + " ");
+                    myEditText.setBackground(new ColorDrawable(000000));
+                    myEditText.setTypeface(null, Typeface.BOLD);
+                    myEditText.setTextSize(17);
+                    button.setImageResource(R.drawable.ic_close);
+                    button.setMaxWidth(12);
+                    button.setMinimumHeight(22);
+                    button.setBackgroundColor(000000);
+                    button.setPadding(0, 0, 10, 15);
+                    button.setAlpha(0.6f);
+                    button.setOnClickListener(new Button.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            answer.remove(hashtag);
+                            myEditText.setVisibility(View.GONE);
+                            button.setVisibility(View.GONE);
+                        }
+                    });
+                    tagandclose.addView(myEditText);
+                    tagandclose.addView(button);
+                    tagLayout.addView(tagandclose);
+                    answer.add(hashtag);
+                    edittext.setText("");
+                    edittext.setHint("Add Hashtags");
+                }
+                edittext.setText("");
+                edittext.setHint("Add Hashtags");
+
+            }
+        });
+
+
+
 
         view.findViewById(R.id.getimage).setOnClickListener(new View.OnClickListener(){
             public void onClick(View vview){
@@ -146,7 +191,7 @@ public class HashtagFragment extends Fragment {
             }
         });
 
-        final EditText edittext = (EditText) view.findViewById(R.id.taginput);
+
         InputFilter filter = new InputFilter() {
             public CharSequence filter(CharSequence source, int start, int end,
                                        Spanned dest, int dstart, int dend) {
@@ -158,13 +203,13 @@ public class HashtagFragment extends Fragment {
                 return null;
             }
         };
-        InputFilter maxLengthFilter = new InputFilter.LengthFilter(40);
+        InputFilter maxLengthFilter = new InputFilter.LengthFilter(28);
         edittext.setFilters(new InputFilter[] { filter, maxLengthFilter });
-        edittext.setOnKeyListener(new View.OnKeyListener() {
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
+        edittext.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int keyCode, KeyEvent event) {
                 // If the event is a key-down event on the "enter" button
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                if (keyCode== EditorInfo.IME_ACTION_SEND) {
                     // Perform action on key press
                     final String hashtag = edittext.getText().toString();
                     if(answer.contains(hashtag) == false) {
@@ -200,9 +245,9 @@ public class HashtagFragment extends Fragment {
                     }
                     edittext.setText("");
                     edittext.setHint("Add Hashtags");
-                    return false;
+                    return true;
                 }
-                return false;
+                return true;
             }
         });
 
@@ -443,7 +488,7 @@ public class HashtagFragment extends Fragment {
 
     private Classifier mClassifier;
     private Result result;
-//    private String answer;
+    //    private String answer;
     private String answerstr;
     private ArrayList<String> answer;
     /**
@@ -573,6 +618,7 @@ public class HashtagFragment extends Fragment {
 //        textview.setText(answer);
 
         view.findViewById(R.id.btnCopyTags).setVisibility(View.VISIBLE);
+//        view.findViewById(R.id.btnInputtag).setVisibility(View.VISIBLE);
         view.findViewById(R.id.taginput).setVisibility(View.VISIBLE);
         view.findViewById(R.id.getimage).setAlpha(1.0f);
 //        view.findViewById(R.id.getimage).setVisibility(View.INVISIBLE);

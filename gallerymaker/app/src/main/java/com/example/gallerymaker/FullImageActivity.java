@@ -30,6 +30,7 @@ public class FullImageActivity extends AppCompatActivity {
         // 상태바를 안보이도록 합니다.
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        ((AppCompatActivity)this).getSupportActionBar().hide();
         position = i.getExtras().getInt("id");
         pager = (ViewPager) findViewById(R.id.pager) ;
         adapter = new CustomAdapter(getLayoutInflater());

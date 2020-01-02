@@ -14,7 +14,7 @@ ListView를 Custom하여, 휴대폰 데이터와 독립된 filesystem을 사용�
 2. 사진 추가 및 삭제
 
 ##Tab3 
-Tensorflow의 Object Detection을 이용하여, 이미지를 분석하고 이에 적합한 해시태그를 생성(해시태그 읽어주기)
+Tensorflow의 Object Detection을 이용하여, 이미지를 분석하고 이에 적합한 해시태그를 생성
 1. 사진 추가 및 변경
 2. 해시태그 수정 및 삭제
 3. 해시태그 복사 및 인스타 업로드
